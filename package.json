@@ -1,27 +1,36 @@
 {
+  "name": "pet-finder",
   "version": "1.0.0",
-  "description": "cs5500-MSD",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "Pet finder",
+  "keywords": [
+    "Node.js",
+    "application",
+      "Heroku"
+  ],
+  "author": {
+    "name": "Heroku",
+    "email": "song.yan@husky.neu.edu"
   },
   "repository": {
     "type": "git",
-    "url": "https://Akshay61@bitbucket.org/msdapi/pet-finder.git"
-//    "url": "git+https://github.com/rapidclock/thomas-rahul-webdev.git"
+    "url": "https://songy23@bitbucket.org/msdapi/pet-finder.git"
   },
-//  "keywords": [
-//    "webdev"
-//  ],
-//  "author": "Rahul Thomas",
-//  "license": "ISC",
-//  "bugs": {
-//    "url": "https://github.com/rapidclock/thomas-rahul-webdev/issues"
-//  },
-//  "homepage": "https://github.com/rapidclock/thomas-rahul-webdev#readme",
+  "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
+  },
   "dependencies": {
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "mongoose": "^4.6.0"
-  }
+    "body-parser": "^1.14.1",
+    "express": "~3.4.4",
+    "guid": "0.0.12",
+    "multer": "^1.1.0",
+    "node-uuid": "^1.4.7",
+    "q": "^1.4.1"
+  },
+  "devDependencies": {
+    "mongoose": "^4.2.6"
+  },
+  "bundleDependencies": [],
+  "private": true,
+  "main": "server.js"
 }
