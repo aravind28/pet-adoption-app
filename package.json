@@ -1,0 +1,35 @@
+{
+  "name": "pet-finder",
+  "version": "1.0.0",
+  "description": "Pet finder",
+  "keywords": [
+    "Node.js",
+    "application",
+      "Heroku"
+  ],
+  "author": {
+    "name": "Heroku",
+    "email": "song.yan@husky.neu.edu"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://songy23@bitbucket.org/msdapi/pet-finder.git"
+  },
+  "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "~3.4.4",
+    "guid": "0.0.12",
+    "multer": "^1.1.0",
+    "node-uuid": "^1.4.7",
+    "q": "^1.4.1"
+  },
+  "devDependencies": {
+    "mongoose": "^4.2.6"
+  },
+  "bundleDependencies": [],
+  "private": true
+}
