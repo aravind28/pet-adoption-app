@@ -31,5 +31,6 @@
     "mongoose": "^4.2.6"
   },
   "bundleDependencies": [],
-  "private": true
+  "private": true,
+  "main": "server.js"
 }
