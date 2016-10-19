@@ -62,6 +62,7 @@ module.exports = function(app, userModel){
 
     function loggedin(req, res){
         res.send(req.isAuthenticated() ? req.user: '0');
+    }
     
     function createUser(req, res) {
         var newUser = req.body;
@@ -72,8 +73,8 @@ module.exports = function(app, userModel){
     
     function updateUser(req, res) {
         var id = req.params.id;
-        var updated_user = req.body;
-        model.updateUser(id, updated_user).then(function(result) {
+        var newUser = req.body;
+        model.updateUser(id, newUser).then(function(result) {
             res.jsonp(result); 
         });
     }
@@ -81,8 +82,5 @@ module.exports = function(app, userModel){
     function deleteUser(req, res) {
         var id = req.params.id;
         model.deleteUser(id);
-        model.findAllUser().then(function(result) {
-            res.jsonp(result); 
-        });
     }
 }
