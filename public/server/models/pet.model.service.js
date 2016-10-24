@@ -1,7 +1,7 @@
 var q = require('q')
 module.exports = function(app, mongoose, db){
-	var PetSchema = require("./user.scheme.js")(app, mongoose);
-	var PetModel = mongoose.model("user", UserSchema);
+	var PetSchema = require("./pet.scheme.js")(app, mongoose);
+	var PetModel = mongoose.model("user", PetSchema);
 
 	var api = {
 		createPet : createPet,
@@ -10,7 +10,7 @@ module.exports = function(app, mongoose, db){
 
 	function createPet(newPet){
 		var deferred = q.defer();
-		UserMode.create(newPet, function(err, results){
+		PetModel.create(newPet, function(err, results){
 			deferred.resolve(results);
 		});
 		return dereffed.promise;
@@ -22,6 +22,15 @@ module.exports = function(app, mongoose, db){
 			deferred.resolve(results);
 		});
 		return deferred.promise;
+	}
+
+	function listAllPets(){
+		PetModel.find(function(err, results){
+			if(err){
+				throw err;
+			}
+			deferred.resulve(results);
+		});
 	}
 
 	return api;
