@@ -5,7 +5,7 @@
   "keywords": [
     "Node.js",
     "application",
-      "Heroku"
+    "Heroku"
   ],
   "author": {
     "name": "Heroku",
@@ -20,8 +20,8 @@
     "npm": ">= 1.0.0"
   },
   "dependencies": {
-    "body-parser": "^1.14.1",
-    "express": "~3.4.4",
+    "body-parser": "^1.15.2",
+    "express": "^3.4.8",
     "guid": "0.0.12",
     "multer": "^1.1.0",
     "node-uuid": "^1.4.7",
