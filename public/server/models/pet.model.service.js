@@ -1,6 +1,6 @@
 var q = require('q')
 module.exports = function(app, mongoose, db){
-	var PetSchema = require("./pet.scheme.js")(app, mongoose);
+	var PetSchema = require("./pet.schema.server.js")(app, mongoose);
 	var PetModel = mongoose.model("user", PetSchema);
 
 	var api = {
