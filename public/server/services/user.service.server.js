@@ -66,7 +66,7 @@ module.exports = function(app, userModel){
     
     function createUser(req, res) {
         var newUser = req.body;
-        model.createUser(newUser).then(function(result) {
+        userModel.createUser(newUser).then(function(result) {
             res.jsonp(result); 
         });
     }
@@ -74,13 +74,13 @@ module.exports = function(app, userModel){
     function updateUser(req, res) {
         var id = req.params.id;
         var newUser = req.body;
-        model.updateUser(id, newUser).then(function(result) {
+        userModel.updateUser(id, newUser).then(function(result) {
             res.jsonp(result); 
         });
     }
     
     function deleteUser(req, res) {
         var id = req.params.id;
-        model.deleteUser(id);
+        userModel.deleteUser(id);
     }
 }
