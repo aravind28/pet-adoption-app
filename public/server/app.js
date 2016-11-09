@@ -2,10 +2,10 @@
  * Created by Akshay on 13-10-2016.
  */
 
-var mongoose = require('mongoose');
-
-module.exports = function(app, db, userModel){
-
+module.exports = function(app, mongoose,db){
+    var userModel = require("./models/user.model.server.js")(app, mongoose, db);
+    var questionModel = require("./models/question.model.server.js")(app, mongoose, db);
+    
     require("./services/user.service.server.js")(app, userModel);
 
     var commentsModel = require("./models/comments.model.server.js")(db, mongoose);
@@ -13,4 +13,5 @@ module.exports = function(app, db, userModel){
 
     var questionModel = require("./models/questions.model.server.js")(db, mongoose);
     require("./service/questions.service.server.js")(app, questionModel);
+    require("./services/question.service.server.js")(app, questionModel);
 }

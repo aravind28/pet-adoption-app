@@ -1,10 +1,8 @@
-
 /**
  * Created by Akshay on 13-10-2016.
  */
 
 "use strict";
-
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
@@ -15,6 +13,9 @@ module.exports = function(app, userModel){
     app.post("/msdapi/project/user/login", passport.authenticate('MSDAPI'), login);
     app.post("/msdapi/project/user/logout", logout);
     app.get("/msdapi/project/user/loggedin", loggedin);
+    app.post('/msdapi/project/user', createUser);
+    app.put('/msdapi/project/user/:id', updateUser);
+    app.delete('/msdapi/project/user/:id', deleteUser);
 
     passport.use('MSDAPI', new LocalStrategy(projectLocalStrategy));
 
@@ -61,5 +62,25 @@ module.exports = function(app, userModel){
 
     function loggedin(req, res){
         res.send(req.isAuthenticated() ? req.user: '0');
+    }
+    
+    function createUser(req, res) {
+        var newUser = req.body;
+        userModel.createUser(newUser).then(function(result) {
+            res.jsonp(result); 
+        });
+    }
+    
+    function updateUser(req, res) {
+        var id = req.params.id;
+        var newUser = req.body;
+        userModel.updateUser(id, newUser).then(function(result) {
+            res.jsonp(result); 
+        });
+    }
+    
+    function deleteUser(req, res) {
+        var id = req.params.id;
+        userModel.deleteUser(id);
     }
 }
