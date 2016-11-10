@@ -3,7 +3,7 @@
  */
 
 const request = require('supertest');
-const app = require('./server');
+const app = require('./server.js');
 const expect = require('chai').expect;
 
 describe('Validate Login of an Existing User', function () {
