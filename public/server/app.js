@@ -7,5 +7,11 @@ module.exports = function(app, mongoose,db){
     var questionModel = require("./models/question.model.server.js")(app, mongoose, db);
     
     require("./services/user.service.server.js")(app, userModel);
+
+    var commentsModel = require("./models/comments.model.server.js")(db, mongoose);
+    require("./services/comments.service.server.js")(app, commentsModel);
+
+    var questionModel = require("./models/questions.model.server.js")(db, mongoose);
+    require("./service/questions.service.server.js")(app, questionModel);
     require("./services/question.service.server.js")(app, questionModel);
 }
