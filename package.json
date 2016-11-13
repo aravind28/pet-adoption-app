@@ -5,7 +5,7 @@
   "keywords": [
     "Node.js",
     "application",
-      "Heroku"
+    "Heroku"
   ],
   "author": {
     "name": "Heroku",
@@ -20,6 +20,7 @@
     "npm": ">= 1.0.0"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.1",
     "express": "~3.4.4",
     "guid": "0.0.12",
