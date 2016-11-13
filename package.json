@@ -5,7 +5,7 @@
   "keywords": [
     "Node.js",
     "application",
-      "Heroku"
+    "Heroku"
   ],
   "author": {
     "name": "Heroku",
@@ -20,15 +20,31 @@
     "npm": ">= 1.0.0"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bcrypt": "^0.8.7",
     "body-parser": "^1.14.1",
+    "chai": "^3.5.0",
     "express": "~3.4.4",
     "guid": "0.0.12",
+    "http": "0.0.0",
+    "mongoose": "^4.2.6",
     "multer": "^1.1.0",
     "node-uuid": "^1.4.7",
-    "q": "^1.4.1"
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "q": "^1.4.1",
+    "supertest": "^2.0.1"
   },
   "devDependencies": {
-    "mongoose": "^4.2.6"
+    "mocha": "^3.1.2"
+  },
+  "scripts": {
+    "name": "instinct",
+    "version": "0.0.1",
+    "dependencies": {},
+    "scripts": {
+      "test": "make test"
+    }
   },
   "bundleDependencies": [],
   "private": true,

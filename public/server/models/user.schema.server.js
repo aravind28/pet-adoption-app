@@ -4,6 +4,8 @@
 
 module.exports = function(app, mongoose){
 
+    var PetSchema = require("./pet.schema.server.js")(app, mongoose);
+
     var UserSchema = new mongoose.Schema({
         username: String,
         password: String,

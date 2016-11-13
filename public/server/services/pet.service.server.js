@@ -5,12 +5,20 @@ module.exports = function(app, petModel){
 	app.get('/msdapi/project/getfavoritelist/:petid/user', getFavoriteList);
 	app.get('/msdapi/project/listallpets', listAllPets);
 	app.get('/msdapi/project/getpetbyid/:id', getPetById);
+<<<<<<< HEAD
 	app.delete('/msdapi/project/pet/:id', deletePet);
     app.put('/msdapi/project/pet/:id', updatePet);
 
 	function createPet(req, res){
 		var newPet = req.body;
 		petModel.createPet(newPet)
+=======
+	app.delete('/msdapi/project/:id', deletePet);
+
+	function createPet(req, res){
+		var newPet = req.body;
+		model.createPet(newPet)
+>>>>>>> ecfeb0d6c7e04fc8865aaadd3e72c0fa5250fcd5
 			 .then(function(result, err){
 			 	if(err){
 			 		throw err;
@@ -19,6 +27,7 @@ module.exports = function(app, petModel){
 			 });
 	}
 
+<<<<<<< HEAD
     function updatePet(req, res) {
         var updatedPet = req.body;
         var petId = req.params.id;
@@ -35,6 +44,11 @@ module.exports = function(app, petModel){
 	function deletePet(req, res){
 		var id = req.params.id;
 		petModel.deletePet(id)
+=======
+	function deletePet(req, res){
+		var id = req.params.id;
+		model.deletePet(id)
+>>>>>>> ecfeb0d6c7e04fc8865aaadd3e72c0fa5250fcd5
 		     .then(function(result, err){
 		     	if(err){
 		     		throw err;

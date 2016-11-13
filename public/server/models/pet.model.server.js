@@ -1,17 +1,29 @@
 var q = require('q')
 
+<<<<<<< HEAD
 module.exports = function(app, db, mongoose, userModel){
 	var PetSchema = require("./pet.schema.server.js")(app, mongoose);
+=======
+module.exports = function(app, db, mongoose){
+	var PetSchema = require("./pet.schema.server.js")(app, mongoose);
+
+>>>>>>> ecfeb0d6c7e04fc8865aaadd3e72c0fa5250fcd5
 	var PetModel = mongoose.model("PetModel", PetSchema);
 
 	var api = {
 		createPet : createPet,
 		deletePet : deletePet,
+<<<<<<< HEAD
         updatePet : updatePet,
 		findPetById : findPetById,
 		listAllPets : listAllPets,
 		createFavoriteList : createFavoriteList,
         notifyUsers : notifyUsers
+=======
+		findPetById : findPetById,
+		listAllPets : listAllPets,
+		createFavoriteList : createFavoriteList
+>>>>>>> ecfeb0d6c7e04fc8865aaadd3e72c0fa5250fcd5
 	};
 
 	function createPet(newPet){
@@ -29,6 +41,7 @@ module.exports = function(app, db, mongoose, userModel){
 		});
 		return deferred.promise;
 	}
+<<<<<<< HEAD
     
     function updatePet(petId, newPet) {
         var deferred = q.defer();  
@@ -52,6 +65,8 @@ module.exports = function(app, db, mongoose, userModel){
             });
         return deferred.promise;
     }
+=======
+>>>>>>> ecfeb0d6c7e04fc8865aaadd3e72c0fa5250fcd5
 
 	function listAllPets(){
 		PetModel.find(function(err, results){
@@ -63,7 +78,11 @@ module.exports = function(app, db, mongoose, userModel){
 	}
 
 	function findPetById(petId){
+<<<<<<< HEAD
 		return PetModel.findOne({_id : petId});
+=======
+		return PetModel.findOne(petId);
+>>>>>>> ecfeb0d6c7e04fc8865aaadd3e72c0fa5250fcd5
 	}
 
 	function createFavoriteList(userId, pet){
@@ -92,6 +111,7 @@ module.exports = function(app, db, mongoose, userModel){
 			});
 		return deferred.promise;
 	}
+<<<<<<< HEAD
     
     function notifyUsers(pet) {
         watchingUsers = pet.favorites;
@@ -103,5 +123,8 @@ module.exports = function(app, db, mongoose, userModel){
         }
     }
     
+=======
+
+>>>>>>> ecfeb0d6c7e04fc8865aaadd3e72c0fa5250fcd5
 	return api;
 }
