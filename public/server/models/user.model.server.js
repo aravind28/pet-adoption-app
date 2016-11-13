@@ -30,7 +30,10 @@ module.exports = function(app, mongoose, db) {
                         lastName : newUser.lastName,
                         roles : newUser.roles,
                         emails : newUser.emails,
-                        phones : newUser.phones
+                        phones : newUser.phones,
+                        favorites : newUser.favorites,
+                        favoritePets : newUser.favoritePets,
+                        notifications : newUser.notifications
                     }
             },
             function(err, result) {
