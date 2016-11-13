@@ -1,7 +1,7 @@
 var q = require('q')
 module.exports = function(app, mongoose, db) {
     var QuestionSchema = require("./question.schema.server.js")(app, mongoose);
-    var QuestionModel = mongoose.model("question", QuestionSchema);
+    var QuestionModel = mongoose.model("QuestionModel", QuestionSchema);
 
     var api = {
         createQuestion : createQuestion,

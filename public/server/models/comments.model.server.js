@@ -5,10 +5,10 @@
 module.exports = function (db, mongoose) {
 
     var CommentsSchema = require("./comments.schema.server.js")(mongoose);
-    var ArticleSchema = require("./article.schema.server.js")(mongoose);
+    //var PetSchema = require("./pet.schema.server.js")(mongoose);
 
-    var CommentsModel = require('CommentsModel', CommentsSchema);
-    var ArticleModel = reqquire('ArticleModel', ArticleSchema);
+    var CommentsModel = mongoose.model('CommentsModel', CommentsSchema);
+    //var PetModel = require('PetModel', PetSchema);
 
     var api = {
         savecomments: savecomments,
@@ -16,7 +16,7 @@ module.exports = function (db, mongoose) {
     };
     return api;
 
-    function savecomments(user, articleid){
+    function savecomments(user, petId){
 
         var comments ={
             createAt : Date.now(),
@@ -25,16 +25,16 @@ module.exports = function (db, mongoose) {
             emails: user.emails
         }
 
-        return ArticleModel.findById(articleid)
-            .then(
-                function (app) {
-                    app.comments.push(comments);
-                    return app.save();
-                }
-            )
+        //return PetModel.findById(petId)
+        //    .then(
+        //        function (app) {
+        //            app.comments.push(comments);
+        //            return app.save();
+        //        }
+        //    )
     }
 
-    function findCommentsById(articleid){
-        return ArticleModel.findById(articleid).select("comments");
+    function findCommentsById(commentId){
+        return CommentsModel.findById(commentId).select("comments");
     }
 }
