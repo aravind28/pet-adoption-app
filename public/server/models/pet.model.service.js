@@ -5,7 +5,9 @@ module.exports = function(app, mongoose, db){
 
 	var api = {
 		createPet : createPet,
-		deletePet : deletePet
+		deletePet : deletePet,
+		findById : findById,
+		listAllPets : listAllPets
 	};
 
 	function createPet(newPet){
@@ -13,12 +15,12 @@ module.exports = function(app, mongoose, db){
 		PetModel.create(newPet, function(err, results){
 			deferred.resolve(results);
 		});
-		return dereffed.promise;
+		return deferred.promise;
 	}
 
 	function deletePet(id){
 		var deferred = q.defer();
-		PetModel.remove({_id :i d}, function(err, results){
+		PetModel.remove({_id :id}, function(err, results){
 			deferred.resolve(results);
 		});
 		return deferred.promise;
@@ -31,6 +33,10 @@ module.exports = function(app, mongoose, db){
 			}
 			deferred.resulve(results);
 		});
+	}
+
+	function findById(petId){
+		return PetModel.findOne(petId);
 	}
 
 	return api;
