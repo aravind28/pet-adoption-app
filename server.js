@@ -11,6 +11,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/public'));
 
+var connectionString = 'mongodb://localhost:27017/test';
+
+if(process.env.MLAB_DB_USERNAME) {
+    connectionString = process.env.MLAB_DB_URL_INIT +
+        process.env.MLAB_DB_USERNAME + ":" +
+        process.env.MLAB_DB_PASSWORD +
+        process.env.MLAB_DB_URL_END + '/' +
+        process.env.MLAB_DB_NAME;
+}
 
 var mongoose = require("mongoose");
 mongoose.connect(connectionString);
