@@ -1,6 +1,3 @@
-/**
- * Created by RT on 17/09/16.
- */
 var express = require('express');
 var app = express();
 var http = require("http");
