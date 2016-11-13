@@ -1,6 +1,6 @@
-module.exports = function (mongoose) {
+module.exports = function (app, mongoose) {
 
-    var CommentsSchema = mongoose.Schema({
+    var CommentsSchema = new mongoose.Schema({
         createdAt: {type: Date, default: Date.now},
         comments: String,
         username: String,
