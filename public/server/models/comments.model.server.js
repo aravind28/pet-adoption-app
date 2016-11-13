@@ -2,13 +2,13 @@
  * Created by Akshay on 19-10-2016.
  */
 
-module.exports = function (db, mongoose) {
+module.exports = function (app,db, mongoose) {
 
-    var CommentsSchema = require("./comments.schema.server.js")(mongoose);
-    //var PetSchema = require("./pet.schema.server.js")(mongoose);
+    var CommentsSchema = require("./comments.schema.server.js")(app, db, mongoose);
+    var PetModel = require('./pet.model.service.js')(app, db, mongoose);
 
     var CommentsModel = mongoose.model('CommentsModel', CommentsSchema);
-    //var PetModel = require('PetModel', PetSchema);
+
 
     var api = {
         savecomments: savecomments,
@@ -25,13 +25,13 @@ module.exports = function (db, mongoose) {
             emails: user.emails
         }
 
-        //return PetModel.findById(petId)
-        //    .then(
-        //        function (app) {
-        //            app.comments.push(comments);
-        //            return app.save();
-        //        }
-        //    )
+        return PetModel.findById(petId)
+            .then(
+                function (app) {
+                    app.comments.push(comments);
+                    return app.save();
+                }
+            )
     }
 
     function findCommentsById(commentId){

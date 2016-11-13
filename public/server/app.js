@@ -6,9 +6,12 @@ module.exports = function(app, mongoose,db){
     var userModel = require("./models/user.model.server.js")(app, mongoose, db);
     require("./services/user.service.server.js")(app, userModel);
 
-    var commentsModel = require("./models/comments.model.server.js")(db, mongoose);
+    var commentsModel = require("./models/comments.model.server.js")(app, db, mongoose);
     require("./services/comments.service.server.js")(app, commentsModel);
 
-    var questionModel = require("./models/question.model.server.js")(db, mongoose);
+    var questionModel = require("./models/question.model.server.js")(app, db, mongoose);
     require("./services/question.service.server.js")(app, questionModel);
+
+    var petModel = require("./models/pet.model.server.js")(app, db, mongoose);
+    require("./services/pet.service.server.js")(app, petModel);
 }

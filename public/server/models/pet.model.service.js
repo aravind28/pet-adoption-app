@@ -5,7 +5,10 @@ module.exports = function(app, mongoose, db){
 
 	var api = {
 		createPet : createPet,
-		deletePet : deletePet
+		deletePet : deletePet,
+		findPetById : findPetById,
+		listAllPets : listAllPets,
+		createFavoriteList : createFavoriteList
 	};
 
 	function createPet(newPet){
@@ -13,12 +16,12 @@ module.exports = function(app, mongoose, db){
 		PetModel.create(newPet, function(err, results){
 			deferred.resolve(results);
 		});
-		return dereffed.promise;
+		return deferred.promise;
 	}
 
 	function deletePet(id){
 		var deferred = q.defer();
-		PetModel.remove({_id :i d}, function(err, results){
+		PetModel.remove({_id :id}, function(err, results){
 			deferred.resolve(results);
 		});
 		return deferred.promise;
@@ -31,6 +34,37 @@ module.exports = function(app, mongoose, db){
 			}
 			deferred.resulve(results);
 		});
+	}
+
+	function findPetById(petId){
+		return PetModel.findOne(petId);
+	}
+
+	function createFavoriteList(userId, pet){
+
+		var deferred = q.defer();
+
+		PetModel.findOne({petId: pet.petId},
+			function (err, doc) {
+				if(err){
+					deferred.reject(err);
+				}
+
+				if(doc){
+					// add user to favorites
+					doc.favorites.push(userId);
+
+					doc.save(function (err, doc) {
+						if(err){
+							deferred.reject(err);
+						}
+						else{
+							deferred.resolve(doc);
+						}
+					});
+				}
+			});
+		return deferred.promise;
 	}
 
 	return api;
