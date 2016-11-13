@@ -6,8 +6,9 @@ module.exports = function(app, mongoose, db){
 	var api = {
 		createPet : createPet,
 		deletePet : deletePet,
-		findById : findById,
-		listAllPets : listAllPets
+		findPetById : findPetById,
+		listAllPets : listAllPets,
+		createFavoriteList : createFavoriteList
 	};
 
 	function createPet(newPet){
@@ -35,8 +36,35 @@ module.exports = function(app, mongoose, db){
 		});
 	}
 
-	function findById(petId){
+	function findPetById(petId){
 		return PetModel.findOne(petId);
+	}
+
+	function createFavoriteList(userId, pet){
+
+		var deferred = q.defer();
+
+		PetModel.findOne({petId: pet.petId},
+			function (err, doc) {
+				if(err){
+					deferred.reject(err);
+				}
+
+				if(doc){
+					// add user to favorites
+					doc.favorites.push(userId);
+
+					doc.save(function (err, doc) {
+						if(err){
+							deferred.reject(err);
+						}
+						else{
+							deferred.resolve(doc);
+						}
+					});
+				}
+			});
+		return deferred.promise;
 	}
 
 	return api;

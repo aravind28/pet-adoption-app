@@ -4,6 +4,8 @@
 
 module.exports = function(app, mongoose){
 
+    var PetSchema = require("./pet.schema.server.js")(mongoose);
+
     var UserSchema = new mongoose.Schema({
         username: String,
         password: String,
@@ -11,7 +13,11 @@ module.exports = function(app, mongoose){
         lastName: String,
         roles: [String],
         emails: [String],
-        phones: [String]
+        phones: [String],
+        // id's of favorite pets for this user
+        favorites: [String],
+        // favorites for this pet
+        favoritePets: [PetSchema]
     }, {collection: 'user'});
     return UserSchema;
 };
