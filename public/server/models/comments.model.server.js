@@ -4,10 +4,11 @@
 
 module.exports = function (app,db, mongoose) {
 
-    var CommentsSchema = require("./comments.schema.server.js")(app, db, mongoose);
-    var PetModel = require('./pet.model.service.js')(app, db, mongoose);
+    var CommentsSchema = require("./comments.schema.server.js")(app, mongoose);
+    var PetModelSchema2 = require('./pet.schema.server.js')(app, mongoose);
 
     var CommentsModel = mongoose.model('CommentsModel', CommentsSchema);
+    var PetModel2 = mongoose.model('PetModel2', PetModelSchema2);
 
 
     var api = {
@@ -25,7 +26,7 @@ module.exports = function (app,db, mongoose) {
             emails: user.emails
         }
 
-        return PetModel.findById(petId)
+        return PetModel2.findById(petId)
             .then(
                 function (app) {
                     app.comments.push(comments);

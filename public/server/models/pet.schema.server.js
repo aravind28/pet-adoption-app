@@ -1,7 +1,8 @@
-module.exports = function(mongoose){
-	var PetSchema = mongoose.Schema({
+module.exports = function(app, mongoose){
+
+	var PetSchema = new mongoose.Schema({
 		petName : String,
-		petGenger : String,
+		petGender : String,
 		petAge : Number,
 		petCategory : String,
 		petAvailability : String,
@@ -12,6 +13,6 @@ module.exports = function(mongoose){
 		userFavorites: [
 			{username: String}
 		]
-	});
+	}, {collection: 'pets'});
 	return PetSchema
 };

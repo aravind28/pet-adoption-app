@@ -1,5 +1,5 @@
 var q = require('q')
-module.exports = function(app, mongoose, db) {
+module.exports = function(app, db, mongoose) {
     var QuestionSchema = require("./question.schema.server.js")(app, mongoose);
     var QuestionModel = mongoose.model("QuestionModel", QuestionSchema);
 
