@@ -3,7 +3,8 @@
  */
 var express = require('express');
 var app = express();
-var http = require('http');
+var http = require("http");
+var mongoose = require("mongoose");
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -21,7 +22,7 @@ if(process.env.MLAB_DB_USERNAME) {
         process.env.MLAB_DB_NAME;
 }
 
-var mongoose = require("mongoose");
+
 mongoose.connect(connectionString);
 var db = mongoose.connection;
 
