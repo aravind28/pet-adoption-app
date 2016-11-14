@@ -140,8 +140,9 @@ module.exports = function(app, petModel){
 	}
 
 	function getPetByAvailability(req, res){
-		model.getPetByAvailability();
-			 .then(function(result, err){
+		model
+			.getPetByAvailability()
+			.then(function(result, err){
 			 	if(err){
 			 		throw err;
 			 	}
@@ -151,8 +152,9 @@ module.exports = function(app, petModel){
 
 	function getPetByCategory(req, res){
 		var category = req.body;
-		model.getPetsByCatefory();
-			 .then(function(result, err){
+		model
+			.getPetsByCategory()
+			.then(function(result, err){
 			 	if(err){
 			 		throw(err);
 			 	}
