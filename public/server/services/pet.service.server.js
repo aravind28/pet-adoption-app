@@ -7,6 +7,8 @@ module.exports = function(app, petModel){
 	app.get('/msdapi/project/getpetbyid/:id', getPetById);
 	app.delete('/msdapi/project/pet/:id', deletePet);
     app.put('/msdapi/project/pet/:id', updatePet);
+    app.get('/msdapi/project/getByAvailability', getPetByAvailability);
+	app.get('msdapi/project/:category', getPetByCategory);
 
 	function createPet(req, res){
 		var newPet = req.body;
@@ -135,6 +137,27 @@ module.exports = function(app, petModel){
 					res.status(400).send(err);
 				}
 			);
+	}
+
+	function getPetByAvailability(req, res){
+		model.getPetByAvailability();
+			 .then(function(result, err){
+			 	if(err){
+			 		throw err;
+			 	}
+			 	res.jsonp(result);
+			 });
+	}
+
+	function getPetByCategory(req, res){
+		var category = req.body;
+		model.getPetsByCatefory();
+			 .then(function(result, err){
+			 	if(err){
+			 		throw(err);
+			 	}
+			 	res.jsonp(result);
+			 });
 	}
 
 }

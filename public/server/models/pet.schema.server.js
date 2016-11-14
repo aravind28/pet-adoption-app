@@ -14,5 +14,5 @@ module.exports = function(app, mongoose){
 			{username: String}
 		]
 	}, {collection: 'pets'});
-	return PetSchema
+	return PetSchema;
 };

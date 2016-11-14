@@ -11,7 +11,9 @@ module.exports = function(app, db, mongoose, userModel){
 		findPetById : findPetById,
 		listAllPets : listAllPets,
 		createFavoriteList : createFavoriteList,
-        notifyUsers : notifyUsers
+        notifyUsers : notifyUsers,
+        getPetByAvailability : getPetsByAvailability,
+		getPetsByCatefory : getPetsByCategory
 	};
 
 	function createPet(newPet){
@@ -102,6 +104,26 @@ module.exports = function(app, db, mongoose, userModel){
             });
         }
     }
+
+    function getPetsByAvailability(){
+		PetMode.find({"petAvailability" : True}, function(err, results){
+			if(err){
+				throw err;
+			}
+			deferred.resolve(results);
+		});
+		return deferred.promise;
+	}
+
+	function getPetsByCatefory(category){
+		PetModel.find({"petCategory" : category}, function(err, results){
+			if(err){
+				throw err;
+			}
+			deferred.resolve(results);
+		});
+		return deferred.promise;
+	}
     
 	return api;
 }
