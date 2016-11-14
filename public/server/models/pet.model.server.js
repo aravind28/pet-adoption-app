@@ -13,7 +13,7 @@ module.exports = function(app, db, mongoose, userModel){
 		createFavoriteList : createFavoriteList,
         notifyUsers : notifyUsers,
         getPetByAvailability : getPetsByAvailability,
-		getPetsByCatefory : getPetsByCategory
+		getPetsByCategory : getPetsByCategory
 	};
 
 	function createPet(newPet){
@@ -115,7 +115,7 @@ module.exports = function(app, db, mongoose, userModel){
 		return deferred.promise;
 	}
 
-	function getPetsByCatefory(category){
+	function getPetsByCategory(category){
 		PetModel.find({"petCategory" : category}, function(err, results){
 			if(err){
 				throw err;
