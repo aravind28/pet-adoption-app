@@ -4,13 +4,13 @@
 
 module.exports = function (app, commentsModel) {
 
-    app.post("/msdapi/project/dogarticle/:id/comments", postcomments);
-    app.get("/msdapi/project/dogarticle/:id/comments", getcomments);
+    app.post("/msdapi/project/pet/:id/comments", postcomments);
+    app.get("/msdapi/project/comments/:id", getcomments);
 
     function postcomments(req, res){
 
         commentsModel
-            .savecomments(req.body, req.params.articleid)
+            .savecomments(req.body, req.params.id)
             .then(
                 function (response) {
                     if(response){
@@ -27,7 +27,7 @@ module.exports = function (app, commentsModel) {
     function getcomments(req, res){
 
         commentsModel
-            .findCommentsById(req.params.articleid)
+            .findCommentsById(req.params.id)
             .then(
                 function (doc) {
                     res.json(doc);

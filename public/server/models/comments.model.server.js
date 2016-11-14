@@ -2,14 +2,10 @@
  * Created by Akshay on 19-10-2016.
  */
 
-module.exports = function (app,db, mongoose) {
+module.exports = function (app, db, mongoose, petModel) {
 
     var CommentsSchema = require("./comments.schema.server.js")(app, mongoose);
-    var PetModelSchema2 = require('./pet.schema.server.js')(app, mongoose);
-
     var CommentsModel = mongoose.model('CommentsModel', CommentsSchema);
-    var PetModel2 = mongoose.model('PetModel2', PetModelSchema2);
-
 
     var api = {
         savecomments: savecomments,
@@ -26,7 +22,7 @@ module.exports = function (app,db, mongoose) {
             emails: user.emails
         }
 
-        return PetModel2.findById(petId)
+        return petModel.findById(petId)
             .then(
                 function (app) {
                     app.comments.push(comments);

@@ -1,5 +1,4 @@
 module.exports = function (app, mongoose) {
-
     var CommentsSchema = new mongoose.Schema({
         createdAt: {type: Date, default: Date.now},
         comments: String,

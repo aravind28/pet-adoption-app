@@ -1,16 +1,17 @@
 var q = require('q')
 
-module.exports = function(app, db, mongoose){
+module.exports = function(app, db, mongoose, userModel){
 	var PetSchema = require("./pet.schema.server.js")(app, mongoose);
-
 	var PetModel = mongoose.model("PetModel", PetSchema);
 
 	var api = {
 		createPet : createPet,
 		deletePet : deletePet,
+        updatePet : updatePet,
 		findPetById : findPetById,
 		listAllPets : listAllPets,
-		createFavoriteList : createFavoriteList
+		createFavoriteList : createFavoriteList,
+        notifyUsers : notifyUsers
 	};
 
 	function createPet(newPet){
@@ -28,6 +29,29 @@ module.exports = function(app, db, mongoose){
 		});
 		return deferred.promise;
 	}
+    
+    function updatePet(petId, newPet) {
+        var deferred = q.defer();  
+        PetModel.update(
+            {_id : petId}, 
+            {$set : {
+                        petName : newPet.petName,
+                        petGender : newPet.petGender,        
+                        petAge : newPet.petAge,
+                        petCategory : newPet.petCategory,
+                        petAvailability : newPet.petAvailability,
+                        adoptedBy : newPet.adoptedBy,
+                        favorites : newPet.favorites,
+                        userFavorites : newPet.userFavorites
+                    }
+            },
+            function(err, result) {
+                PetModel.findOne({_id : petId}, function(err, result) {
+                    deferred.resolve(result);
+                });
+            });
+        return deferred.promise;
+    }
 
 	function listAllPets(){
 		PetModel.find(function(err, results){
@@ -39,7 +63,7 @@ module.exports = function(app, db, mongoose){
 	}
 
 	function findPetById(petId){
-		return PetModel.findOne(petId);
+		return PetModel.findOne({_id : petId});
 	}
 
 	function createFavoriteList(userId, pet){
@@ -68,6 +92,16 @@ module.exports = function(app, db, mongoose){
 			});
 		return deferred.promise;
 	}
-
+    
+    function notifyUsers(pet) {
+        watchingUsers = pet.favorites;
+        for (var i = 0; i < watchingUsers.length; i++) {
+            userModel.findUserById(watchingUsers[i]).then(function(res){
+                res.notifications.push("Information of a watching pet " + pet.petName + " has changed.");
+                userModel.updateUser(res._id, res).then(function(res2){});
+            });
+        }
+    }
+    
 	return api;
 }
