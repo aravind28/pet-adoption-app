@@ -5,8 +5,8 @@ module.exports = function(app, mongoose){
 		petGender : String,
 		petAge : Number,
 		petCategory : String,
-		petAvailability : String,
-		petStarredBy : [String],
+		petAvailability : Boolean,
+        adoptedBy : String,
 		// id's of users who like this pet
 		favorites: [String],
 		// list of users that like this pet
@@ -14,5 +14,5 @@ module.exports = function(app, mongoose){
 			{username: String}
 		]
 	}, {collection: 'pets'});
-	return PetSchema
+	return PetSchema;
 };
