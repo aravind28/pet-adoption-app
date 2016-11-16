@@ -34,7 +34,7 @@ module.exports = function(app, db, mongoose){
 			if(err){
 				throw err;
 			}
-			deferred.resulve(results);
+			deferred.resolve(results);
 		});
 	}
 
