@@ -34,7 +34,9 @@
     "passport-local": "^1.0.0",
     "q": "^1.4.1",
     "supertest": "^2.0.1",
-    "swagger": "^0.7.5"
+    "swagger": "^0.7.5",
+    "swagger-node-express": "~2.0",
+    "minimist" : "*"
   },
   "devDependencies": {
     "mocha": "^3.1.2"
