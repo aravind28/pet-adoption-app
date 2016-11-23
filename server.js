@@ -11,8 +11,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/v1", subpath);
 
-var swagger = require("swagger-node-express").createNew(subpath);
-
 app.use(express.static(__dirname + '/public'));
 app.use(express.static('dist'));
 subpath.use(express.static('dist'));

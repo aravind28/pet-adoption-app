@@ -27,6 +27,7 @@
     "express": "~3.4.4",
     "guid": "0.0.12",
     "http": "0.0.0",
+    "minimist": "^1.2.0",
     "mongoose": "^4.2.6",
     "multer": "^1.1.0",
     "node-uuid": "^1.4.7",
@@ -35,7 +36,6 @@
     "q": "^1.4.1",
     "supertest": "^2.0.1",
     "swagger": "^0.7.5",
-    "swagger-node-express": "~2.0",
     "minimist" : "*"
   },
   "devDependencies": {
