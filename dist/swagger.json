@@ -8,18 +8,21 @@
   },
   "basePath": "/",
   "tags" : [
-    {"name": "Tag1", 
+    {"name": "Tag1",
     "description": "API for something"
+    },
+    {"name": "Users",
+      "description": "API for Users"
     }
   ],
   "schemes": [
-    "https"
+    "http"
   ],
   "consumes": [
-    "application/json"
+    ""
   ],
   "produces": [
-    "application/json"
+    "json"
   ],
   "paths": {
     "/path/to/method": {
@@ -102,7 +105,169 @@
             }
           }
         }
+      },
+    "/msdproject/project/user/login":{
+      "post": {
+        "tags": ["Users"],
+        "description": "Checks user login",
+        "operationId": "for the URL",
+        "produces": [
+          "json"
+        ],
+        "parameters":[
+          {
+            "name": "Job Parameters",
+            "in": "body",
+            "description": "Job to check User credentials",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/create"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logs in an user if s/he has valid credentials",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          }
+        }
       }
+    },
+    "/msdproject/project/user/logout":{
+      "post": {
+        "tags": ["Users"],
+        "description": "Logs out a User",
+        "oprationId": "for the URL",
+        "produces": [],
+        "parameters": [
+          {
+            "name": "Job Parameters",
+            "in": "body",
+            "description": "Job to logout a User",
+            "required": true,
+            "schema":{
+              "$ref": "#/definition/create"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logs out a user",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          }
+        }
+      }
+    },
+    "/msdproject/project/user/loggedin":{
+      "get": {
+        "tags": ["Users"],
+        "description": "Checks if the user is logged in. Used for session management.",
+        "operationId": "for the URL",
+        "produces": [],
+        "parameters": [
+          {
+            "name": "Job Parameters",
+            "in": "body",
+            "description": "Job to check if User is logged in",
+            "required": true,
+            "schema": {
+              "$red": "#/definitions/create"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Maintains a session if user is logged in with valid credentials",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          }
+        }
+      }
+    },
+    "/msdapi/project/user":{
+      "post": {
+        "tags": ["Users"],
+        "description": "Creates a new User",
+        "operationId": "for the URL",
+        "produces": ["json"],
+        "parameters":[
+          {
+            "name": "Job Parameters",
+            "in": "body",
+            "description": "Job to create a new User",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/create"
+            }
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "Creates a new user",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          }
+        }
+      }
+    },
+    "/msdapi/project/user/:id":{
+      "put":{
+        "tags": ["Users"],
+        "description": "Update details of an user",
+        "operationId": "for the URL",
+        "produces": ["json"],
+        "parameters": [
+          {
+            "name": "Job Parameters",
+            "in": "body",
+            "description": "Job to Update details of an existing User",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/create"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates the details of an existing User successfully",
+            "scehma": {
+              "$ref": "#/definitions/response"
+            }
+          }
+        }
+      }
+    },
+    "/msdapi/project/user/{id}":{
+      "delete": {
+        "tags": ["Users"],
+        "description": "Deletes a User",
+        "operationId": "delete",
+        "produces": ["json"],
+        "parameters":[
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "Id to delete a User",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete a User successfully",
+            "schema": {
+              "$ref": "#/definitions/deleteRes"
+            }
+          }
+        }
+      }
+  }
   },
   "definitions": {
     "create": {
@@ -117,7 +282,7 @@
           "type":"integer",
           "format": "int64",
           "example": 500
-        } 
+        }
       }
     },
     "response1": {
