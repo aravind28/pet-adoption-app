@@ -10,6 +10,9 @@
   "tags" : [
     {"name": "Users",
       "description": "API for Users"
+    },
+    {"name": "Pets", 
+      "description": "API for Pets"
     }
   ],
   "schemes": [
@@ -181,6 +184,137 @@
           }
         }
       }
+    },
+    "/msdapi/project/pet": {
+       "post": {
+          "tags": ["Pets"],
+          "description": "This api creates a pet in the database",
+          "operationId": "for the URL",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+              {
+                "name": "Job Parameters",
+                "in": "body",
+                "description": "Job to add to the database",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/createPet"
+                }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "a json of the pet created",
+              "schema": {
+                 "$ref": "#/definitions/400error"
+              }
+            }
+          }
+        }
+    },
+    "/msdapi/project/pet/:id": {
+        "delete":{
+          "tags":["Pets"],
+          "description":"Deletes a pet based on its id",
+          "operationId":"delete",
+          "produces": [
+            "application/json"
+          ],
+          "parameters":[
+              {
+                "name": "someVariable",
+                "in": "path",
+                "description": "ID to delete",
+                "required": true,
+                "type": "string",
+                "schema": {
+                "$ref": "#/definitions/deletePet"
+                }
+              }
+            ],
+          "responses": {
+            "200": {
+              "description": "delete response",
+              "schema":{
+                "$ref":"#/definitions/deleteRes"
+              }
+            }
+          }
+        },
+      "get":{
+          "tags": [ "Pets"],
+          "description": "Returns the status of a pet",
+          "operationId": "findById",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+              {
+                "name": "ID",
+                "in": "path",
+                "description": "ID to fetch",
+                "required": false,
+                "type": "string",
+                "schema": {
+                  "$ref": "#/definitions/getById"
+                }
+              }
+            ],
+        "responses": {
+            "200": {
+              "description": "response",
+              "schema": {
+                "$ref": "#/definitions/response1"
+              }
+            }
+          }
+        }
+      },
+    "/msdapi/project/listAllPets": {
+        "get": {
+          "tags": ["Pets"],
+          "description": "Lists all the pets in the database",
+          "operationId": "getAllPets",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+              {
+                "schema": {
+                  "$ref": "#/definitions/getAllPets"
+                } 
+              }
+          ],
+          "responses": {
+            "200":{
+                "description": "response"
+            }
+          }
+        }
+    },
+    "msdapi/project/:category": {
+      "get": {
+          "tags": ["Pets"],
+          "description": "Lists all the pets in the category, irrrespective of availability",
+          "operationId": "getPetsByAvailability",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "schema": {
+                "$ref": "#/definitions/getByCategory"
+              }
+            }
+          ],
+          "response": {
+            "200": {
+
+            }
+          }
+      }
     }
   },
   "definitions": {
@@ -236,6 +370,74 @@
               "required": true,
               "type": "string",
               "example": "deleted"
+            }
+        }
+    },
+    "createPet": {
+      "properties": {
+        "petName": {
+          "required":true,
+          "type": "string",
+          "example": "Drake"
+        },
+        "petGender": {
+          "required":true,
+          "type":"string",
+          "example": "male"
+        },
+        "petAge": {
+          "required":true,
+          "type":"int",
+          "exampe":4 
+        },
+        "petCategory": {
+          "required":true,
+          "type":"string",
+          "example":"dog"
+        },
+        "petAvailability":{
+          "required":true,
+          "type":"boolean",
+          "example":true
+        },
+        "adoptedBy": {
+          "required":true,
+          "type":"string",
+          "example":"name1"
+        },
+        "favourites": {
+          "required":true,
+          "type":"string",
+          "example":"name1, name2"
+        },
+        "userFavourites": {
+          "required":true,
+          "type":"string",
+          "example":"name1, name2"
+        }
+      }
+    },
+    "getById": {
+        "properties": {
+          "petId":{
+              "type":"string",
+              "example":"idOfPet"
+            }
+        }
+    },
+    "deletePet": {
+        "properties": {
+          "petId":{
+              "type":"string",
+              "example":"idOfAnPet"
+            }
+        } 
+    },
+    "getByCategory": {
+        "properties": {
+            "petCategory": {
+              "type": "String",
+              "example": "Dog"
             }
         }
     },
