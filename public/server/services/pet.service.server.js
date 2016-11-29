@@ -44,7 +44,6 @@ module.exports = function(app, petModel){
 		     });
 	}
 
-
 	function listAllPets(req, res){
 		petModel
 			.listAllPets()

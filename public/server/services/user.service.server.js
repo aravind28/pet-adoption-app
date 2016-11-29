@@ -49,6 +49,13 @@ module.exports = function(app, userModel){
         }
     }
 
+    function isAdmin(user){
+        if(user.roles.indexOf('admin') > -1){
+            return true;
+        }
+        return false;
+    }
+
     function login(req, res){
         var user = req.user;
         delete user.password;
@@ -80,7 +87,22 @@ module.exports = function(app, userModel){
     }
     
     function deleteUser(req, res) {
-        var id = req.params.id;
-        userModel.deleteUser(id);
+
+        if(isAdmin(req.user)){
+            userModel
+                .deleteUser(req.params.id)
+                .then(
+                    function () {
+                        return res.json(users);
+                    },
+
+                    function (err) {
+                        res.status(400).send(err);
+                    }
+                )
+        }
+        else{
+            res.status(403);
+        }
     }
 }
