@@ -75,10 +75,48 @@ module.exports = function(app, userModel){
     }
     
     function createUser(req, res) {
-        var newUser = req.body;
-        userModel.createUser(newUser).then(function(result) {
-            res.jsonp(result); 
-        });
+        //var newUser = req.body;
+        //userModel.createUser(newUser).then(function(result) {
+        //    res.jsonp(result);
+        //});
+
+        var user = req.body;
+        user.roles = ['standard'];
+
+        userModel
+            .findUserByUsername(user.username)
+            .then(
+                function (usr) {
+                    if(usr){
+                        res.json(null);
+                    }
+                    else{
+                        user.password = bcrypt.hashSync(user.password);
+                        return userModel.createUser(user);
+                    }
+                },
+
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (user) {
+                    if(user){
+                        req.login(user, function (err) {
+                            if(err){
+                                res.status(400).send(err);
+                            }
+                            else{
+                                res.json(user);
+                            }
+                        });
+                    }
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
     
     function updateUser(req, res) {
