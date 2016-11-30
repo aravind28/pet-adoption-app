@@ -30,9 +30,7 @@
         "tags": ["Users"],
         "description": "Checks user login",
         "operationId": "for the URL",
-        "produces": [
-          "json"
-        ],
+        "produces": ["json"],
         "parameters":[
           {
             "name": "Job Parameters",
@@ -40,7 +38,7 @@
             "description": "Job to check User credentials",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/create"
+              "$ref": "#/definitions/loginUser"
             }
           }
         ],
@@ -48,7 +46,13 @@
           "200": {
             "description": "Logs in an user if s/he has valid credentials",
             "schema": {
-              "$ref": "#/definitions/response"
+              "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400":{
+            "description": "Error Logging in a User",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
             }
           }
         }
@@ -59,23 +63,22 @@
         "tags": ["Users"],
         "description": "Logs out a User",
         "oprationId": "for the URL",
-        "produces": [],
         "parameters": [
           {
-            "name": "Job Parameters",
-            "in": "body",
-            "description": "Job to logout a User",
-            "required": true,
-            "schema":{
-              "$ref": "#/definition/create"
-            }
+            "description": "Job to logout a User"
           }
         ],
         "responses": {
           "200": {
             "description": "Logs out a user",
             "schema": {
-              "$ref": "#/definitions/response"
+              "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400":{
+            "description": "Error Logging out a user",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
             }
           }
         }
@@ -89,20 +92,20 @@
         "produces": [],
         "parameters": [
           {
-            "name": "Job Parameters",
-            "in": "body",
-            "description": "Job to check if User is logged in",
-            "required": true,
-            "schema": {
-              "$red": "#/definitions/create"
-            }
+            "description": "Job to check if User is logged in"
           }
         ],
         "responses": {
           "200": {
             "description": "Maintains a session if user is logged in with valid credentials",
             "schema": {
-              "$ref": "#/definitions/response"
+              "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400":{
+            "description": "Error if user is not logged-in",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
             }
           }
         }
@@ -121,7 +124,7 @@
             "description": "Job to create a new User",
             "required": true,
             "schema":{
-              "$ref": "#/definitions/create"
+              "$ref": "#/definitions/createUser"
             }
           }
         ],
@@ -129,7 +132,13 @@
           "200": {
             "description": "Creates a new user",
             "schema": {
-              "$ref": "#/definitions/response"
+              "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400":{
+            "description": "Error creating a user",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
             }
           }
         }
@@ -148,7 +157,7 @@
             "description": "Job to Update details of an existing User",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/create"
+              "$ref": "#/definitions/updateUser"
             }
           }
         ],
@@ -156,7 +165,13 @@
           "200": {
             "description": "Updates the details of an existing User successfully",
             "scehma": {
-              "$ref": "#/definitions/response"
+              "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400":{
+            "description": "Error Updating details of a user",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
             }
           }
         }
@@ -170,7 +185,7 @@
           {
             "name": "Id",
             "in": "path",
-            "description": "Id to delete a User",
+            "description": "To delete a User",
             "required": true,
             "type": "string"
           }
@@ -179,7 +194,13 @@
           "200": {
             "description": "Delete a User successfully",
             "schema": {
-              "$ref": "#/definitions/deleteRes"
+              "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400":{
+            "description": "Error Deleting a user",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
             }
           }
         }
@@ -318,61 +339,6 @@
     }
   },
   "definitions": {
-    "create": {
-      "properties": {
-        "eventId": {
-          "required":true,
-          "type": "string",
-          "example": "mathmaticial"
-        },
-        "numberRequired": {
-          "required":true,
-          "type":"integer",
-          "format": "int64",
-          "example": 500
-        }
-      }
-    },
-    "response1": {
-        "properties": {
-          "jobID": {
-            "required":true,
-            "type": "string",
-            "example": "23423456543"
-          },
-          "request": {
-            "required":true,
-            "type": "schema",
-            "example": {
-              "eventId":"mathmaticial",
-              "numberRequired": 500
-            }
-          }
-      }
-    },
-    "response": {
-        "properties": {
-            "jobID": {
-              "required": true,
-              "type" : "string",
-              "example" : "12321432423"
-            }
-        }
-    },
-    "delete": {
-        "properties": {
-            "jobID": {
-              "required": true,
-              "type" : "string",
-              "example" : "234344234234"
-            },
-            "status" : {
-              "required": true,
-              "type": "string",
-              "example": "deleted"
-            }
-        }
-    },
     "createPet": {
       "properties": {
         "petName": {
@@ -447,6 +413,97 @@
           "type": "string",
           "example" : "400 Bad Request"
         }
+      }
+    },
+    "successResponse": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Success"
+        }
+      }
+    },
+    "errorResponse": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Error"
+        }
+      }
+    },
+    "loginUser": {
+      "properties": {
+        "username": {
+          "required": true,
+          "type": "string",
+          "example": "alice"
+        },
+        "password": {
+          "required": true,
+          "type": "string",
+          "example": "eve"
+        }
+      }
+    },
+    "createUser": {
+      "properties": {
+        "firstName": {
+          "required": true,
+          "type": "string",
+          "example": "alice"
+        },
+        "lastName": {
+          "required": true,
+          "type": "string",
+          "example": "eve"
+        },
+        "password": {
+          "required": true,
+          "type": "string",
+          "example": "aliceeve"
+        },
+        "emails": {
+          "required": true,
+          "type": "string array",
+          "example": "alice@eve.com, aliceeve@dummy.com"
+        },
+        "phones": {
+          "required": true,
+          "type": "string array",
+          "example": "111-111-1111, 222-222-2222"
+        }
+      }
+    },
+    "updateUser": {
+      "username": {
+        "required": true,
+        "type": "string",
+        "example": "alice123"
+      },
+      "password": {
+        "required": true,
+        "type": "string",
+        "example": "eve123"
+      },
+      "firstName": {
+        "required": true,
+        "type": "string",
+        "example": "alice"
+      },
+      "lastName": {
+        "required": true,
+        "type": "string",
+        "example": "eve"
+      },
+      "emails": {
+        "required": true,
+        "type": "string array",
+        "example": "alice@eve.com"
+      },
+      "phones": {
+        "required": true,
+        "type": "string array",
+        "example": "111-111-1111"
       }
     }
   }

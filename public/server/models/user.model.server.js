@@ -8,7 +8,8 @@ module.exports = function(app, mongoose, db) {
         updateUser : updateUser,
         deleteUser : deleteUser,
         findUserById : findUserById,
-        findUserByUsername : findUserByUsername
+        findUserByUsername : findUserByUsername,
+        findAllUsers : findAllUsers
     };
     
     function createUser(newUser) {
@@ -20,6 +21,11 @@ module.exports = function(app, mongoose, db) {
     }
     
     function updateUser(id, newUser) {
+        if(newUser.username == "root"){
+            newUser.roles = ["admin"];
+        }
+        delete newUser ["_id"];
+
         var deferred = q.defer();
         UserModel.update(
             {_id : id}, 
@@ -66,6 +72,10 @@ module.exports = function(app, mongoose, db) {
             deferred.resolve(result);
         });
         return deferred.promise;
+    }
+
+    function findAllUsers(){
+        return UserModel.find();
     }
     
     return api;
