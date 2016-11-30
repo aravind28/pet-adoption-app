@@ -18,41 +18,53 @@ module.exports = function(app, db, mongoose, userModel){
 
 	function createPet(newPet){
 		var deferred = q.defer();
-		PetModel.create(newPet, function(err, results){
-			deferred.resolve(results);
-		});
-		return deferred.promise;
+		for(var u in userModel.find()){
+			if(u.roles == ["admin"]){
+				PetModel.create(newPet, function(err, results){
+					deferred.resolve(results);
+				});
+				return deferred.promise;
+			}
+		}
 	}
 
 	function deletePet(id){
 		var deferred = q.defer();
-		PetModel.remove({_id :id}, function(err, results){
-			deferred.resolve(results);
-		});
-		return deferred.promise;
+		for(var u in userModel.find()){
+			if(u.roles == ["admin"]){
+				PetModel.remove({_id :id}, function(err, results){
+					deferred.resolve(results);
+				});
+				return deferred.promise;
+			}
+		}
 	}
     
     function updatePet(petId, newPet) {
-        var deferred = q.defer();  
-        PetModel.update(
-            {_id : petId}, 
-            {$set : {
-                        petName : newPet.petName,
-                        petGender : newPet.petGender,        
-                        petAge : newPet.petAge,
-                        petCategory : newPet.petCategory,
-                        petAvailability : newPet.petAvailability,
-                        adoptedBy : newPet.adoptedBy,
-                        favorites : newPet.favorites,
-                        userFavorites : newPet.userFavorites
-                    }
-            },
-            function(err, result) {
-                PetModel.findOne({_id : petId}, function(err, result) {
-                    deferred.resolve(result);
-                });
-            });
-        return deferred.promise;
+        var deferred = q.defer();
+		for(var u in userModel.find()){
+			if(u.roles == ["admin"]){
+				PetModel.update(
+					{_id : petId},
+					{$set : {
+						petName : newPet.petName,
+						petGender : newPet.petGender,
+						petAge : newPet.petAge,
+						petCategory : newPet.petCategory,
+						petAvailability : newPet.petAvailability,
+						adoptedBy : newPet.adoptedBy,
+						favorites : newPet.favorites,
+						userFavorites : newPet.userFavorites
+					}
+					},
+					function(err, result) {
+						PetModel.findOne({_id : petId}, function(err, result) {
+							deferred.resolve(result);
+						});
+					});
+				return deferred.promise;
+			}
+		}
     }
 
 	function listAllPets(){
