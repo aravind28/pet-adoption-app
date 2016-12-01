@@ -9,11 +9,15 @@
   "basePath": "/",
   "tags" : [
     {"name": "Question", 
-    "description": "API for Creating and deleting questions"
+    "description": "API for creating and deleting questions"
+    },
+    {
+      "name": "Comment",
+      "description": "API for creating and retrieving comments"
     }
   ],
   "schemes": [
-    "https"
+    "http"
   ],
   "consumes": [
     "application/json"
@@ -81,7 +85,74 @@
             }
           }
         }
+      },
+    "/msdapi/project/pet/{userId}/comments": {
+      "post": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Create a new comment object for the given user",
+        "operationId": "createComment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Comment Body",
+            "in": "body",
+            "description": "The new comment to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user who posted the comment",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A unique comment ID will be returned after creating a question",
+            "schema": {
+              "$ref": "#/definitions/createCommentResponse"
+            }
+          }
+        }
       }
+    },
+    "/msdapi/project/comments/{commentId}": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Retrieve a comment object with the given ID",
+        "operationId": "getComment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "ID of the comment to be retrieved",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comment with the requested ID",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
+      }
+    }
   },
   "definitions": {
     "create": {
@@ -131,6 +202,36 @@
               "example" : "234344234234"
             }
         }
+    },
+    "createCommentResponse": {
+      "properties": {
+        "commentId": {
+          "required": true,
+          "type": "string",
+          "example": "123456"
+        }
+      }
+    },
+    "comment": {
+      "properties": {
+        "createdAt": {
+          "required": true
+        },
+        "comments": {
+          "required": true,
+          "type": "string",
+          "example": "This is a sample comment."
+        },
+        "username": {
+          "required": true,
+          "type": "string",
+          "example": "SampleUser"
+        },
+        "emails": {
+          "required": false,
+          "example": "[12345@gmail.com]"
+        }
+      }
     },
     "400error" : {
        "properties": {
