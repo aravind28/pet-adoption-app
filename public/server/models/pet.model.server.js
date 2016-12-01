@@ -18,32 +18,32 @@ module.exports = function(app, db, mongoose, userModel){
 
 	function createPet(newPet){
 		var deferred = q.defer();
-		for(var u in userModel.find()){
-			if(u.roles == ["admin"]){
+		// for(var u in userModel.find()){
+		// 	if(u.roles == ["admin"]){
 				PetModel.create(newPet, function(err, results){
 					deferred.resolve(results);
 				});
 				return deferred.promise;
-			}
-		}
+		// 	}
+		// }
 	}
 
 	function deletePet(id){
 		var deferred = q.defer();
-		for(var u in userModel.find()){
-			if(u.roles == ["admin"]){
+		// for(var u in userModel.find()){
+		// 	if(u.roles == ["admin"]){
 				PetModel.remove({_id :id}, function(err, results){
 					deferred.resolve(results);
 				});
 				return deferred.promise;
-			}
-		}
+		// 	}
+		// }
 	}
     
     function updatePet(petId, newPet) {
         var deferred = q.defer();
-		for(var u in userModel.find()){
-			if(u.roles == ["admin"]){
+		// for(var u in userModel.find()){
+		// 	if(u.roles == ["admin"]){
 				PetModel.update(
 					{_id : petId},
 					{$set : {
@@ -63,8 +63,8 @@ module.exports = function(app, db, mongoose, userModel){
 						});
 					});
 				return deferred.promise;
-			}
-		}
+		// 	}
+		// }
     }
 
 	function listAllPets(){
