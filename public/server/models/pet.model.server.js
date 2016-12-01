@@ -18,14 +18,10 @@ module.exports = function(app, db, mongoose, userModel){
 
 	function createPet(newPet){
 		var deferred = q.defer();
-		for(var u in userModel.find()){
-			if(u.roles == ["admin"]){
-				PetModel.create(newPet, function(err, results){
-					deferred.resolve(results);
-				});
-				return deferred.promise;
-			}
-		}
+		PetModel.create(newPet, function(err, results){
+			deferred.resolve(results);
+		});
+		return deferred.promise;
 	}
 
 	function deletePet(id){
