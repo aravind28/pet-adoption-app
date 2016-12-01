@@ -16,8 +16,6 @@ module.exports = function(app, mongoose){
         phones: [String],
         // id's of favorite pets for this user
         favorites: [String],
-        // favorites for this pet
-        favoritePets: [PetSchema],
         notifications : [String]
     }, {collection: 'user'});
     return UserSchema;

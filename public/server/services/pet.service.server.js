@@ -1,7 +1,7 @@
 module.exports = function(app, petModel){
 
 	app.post('/msdapi/project/pet', createPet);
-	app.post('/msdapi/project/petfavoritelist/:petid', createFavoriteList);
+	// app.post('/msdapi/project/petfavoritelist/:petid', createFavoriteList);
 	app.get('/msdapi/project/getfavoritelist/:petid/user', getFavoriteList);
 	app.get('/msdapi/project/listallpets', listAllPets);
 	app.get('/msdapi/project/getpetbyid/:id', getPetById);
