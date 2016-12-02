@@ -15,8 +15,8 @@ module.exports = function(app, userModel){
     app.get("/msdapi/project/user/loggedin", loggedin);
     app.post('/msdapi/project/user', createUser);
     app.put('/msdapi/project/user/:id', updateUser);
-    app.post('/msdapi/project/petfavoritelist', createFavoriteList);
     app.delete('/msdapi/project/user/:id', deleteUser);
+    app.post('/msdapi/project/petfavoritelist', createFavoriteList);
     app.post("/msdapi/project/admin/user", auth, addadmin);
     app.get("/msdapi/project/admin/user", getusers);
     app.put("/msdapi/project/admin/user/:id", auth, adminupdate);
@@ -128,7 +128,6 @@ module.exports = function(app, userModel){
     
     function updateUser(req, res) {
         var id = req.params.id;
-        console.log(id);
         var newUser = req.body;
         newUser.password = bcrypt.hashSync(newUser.password);
         userModel.updateUser(id, newUser).then(function(result) {

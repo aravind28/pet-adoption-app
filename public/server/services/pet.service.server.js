@@ -1,12 +1,13 @@
 module.exports = function(app, petModel){
 
 	app.post('/msdapi/project/pet', createPet);
+	app.put('/msdapi/project/pet/:id', updatePet);
+	app.delete('/msdapi/project/pet/:id', deletePet);
+	app.get('/msdapi/project/getpetbyid/:id', getPetById);
+	app.get('/msdapi/project/listallpets', listAllPets);
 	app.post('/msdapi/project/petfavoritelist/:petid', createFavoriteList);
 	app.get('/msdapi/project/getfavoritelist/:petid/user', getFavoriteList);
 	app.get('/msdapi/project/listallpets', listAllPets);
-	app.get('/msdapi/project/getpetbyid/:id', getPetById);
-	app.delete('/msdapi/project/pet/:id', deletePet);
-    app.put('/msdapi/project/pet/:id', updatePet);
     app.get('/msdapi/project/getByAvailability', getPetByAvailability);
 	app.get('msdapi/project/:category', getPetByCategory);
 
@@ -24,20 +25,22 @@ module.exports = function(app, petModel){
     function updatePet(req, res) {
         var updatedPet = req.body;
         var petId = req.params.id;
-        petModel.updatePet(petId, updatedPet)
+        petModel
+        	.updatePet(petId, updatedPet)
             .then(function(result, err) {
-            if(err) {
-                throw err;
-            }
-            res.jsonp(result);
-            petModel.notifyUsers(updatedPet);
+            	if(err) {
+                	throw err;
+            	}
+           	res.jsonp(result);
+           	petModel.notifyUsers(updatedPet);
         });
     }
     
 	function deletePet(req, res){
 		var id = req.params.id;
-		petModel.deletePet(id)
-		     .then(function(result, err){
+		petModel
+			.deletePet(id)
+		    .then(function(result, err){
 		     	if(err){
 		     		throw err;
 		     	}
@@ -48,24 +51,25 @@ module.exports = function(app, petModel){
 		petModel
 			.listAllPets()
 			.then(
-				function (pet) {
-					res.json(pet);
+				function(pets) {
+					console.log("position2");
+					res.json(pets);
 				},
 
-				function () {
+				function(err) {
 					res.status(400).send(err);
 				}
 			);
 	}
 
 	function getPetById(req, res){
+		petModel.findPetById(req.params.id);
 		petModel
-			.findById(req.params.id)
+			.findPetById(req.params.id)
 			.then(
 				function (pet) {
-					return petModel.listAllPets();
+					res.json(pet);
 				},
-
 				function (err) {
 					res.status(400).send(err);
 				}
