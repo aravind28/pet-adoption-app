@@ -5,6 +5,7 @@ module.exports = function(app, db, mongoose) {
 
     var api = {
         createQuestion : createQuestion,
+        getQuestionById : getQuestionById,
         deleteQuestion : deleteQuestion
     };
     
@@ -14,6 +15,10 @@ module.exports = function(app, db, mongoose) {
             deferred.resolve(results);
         });
         return deferred.promise;
+    }
+
+    function getQuestionById(id) {
+        return QuestionModel.findById(id);
     }
     
     function deleteQuestion(id) {

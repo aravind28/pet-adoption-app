@@ -14,8 +14,15 @@
     {"name": "Users",
       "description": "API for Users"
     },
-    {"name": "Pets", 
+    {"name": "Pets",
       "description": "API for Pets"
+    },
+    {"name": "Question",
+      "description": "API for creating and deleting questions"
+    },
+    {
+      "name": "Comment",
+      "description": "API for creating and retrieving comments"
     }
   ],
 
@@ -66,7 +73,7 @@
       }
     },
 
-    "/msdapi/project/user/:id":{
+    "/msdapi/project/user/{id}":{
       "put":{
         "tags": ["Users"],
         "description": "Update details of an user",
@@ -74,9 +81,16 @@
         "produces": ["json"],
         "parameters": [
           {
-            "name": "Job Parameters",
+            "name": "id",
+            "in": "path",
+            "description": "the id of the user to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "User",
             "in": "body",
-            "description": "Job to Update details of an existing User",
+            "description": "the updated User object",
             "required": true,
             "schema": {
               "$ref": "#/definitions/updateUser"
@@ -105,9 +119,9 @@
         "produces": ["json"],
         "parameters":[
           {
-            "name": "Id",
+            "name": "id",
             "in": "path",
-            "description": "To delete a User",
+            "description": "the id of the user to be deleted",
             "required": true,
             "type": "string"
           }
@@ -213,92 +227,9 @@
     },
 
     "/msdapi/project/pet": {
-       "post": {
-          "tags": ["Pets"],
-          "description": "This api creates a pet in the database",
-          "operationId": "for the URL",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-              {
-                "name": "Job Parameters",
-                "in": "body",
-                "description": "Job to add to the database",
-                "required": true,
-                "schema": {
-                  "$ref": "#/definitions/createPet"
-                }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "a json of the pet created",
-              "schema": {
-                 "$ref": "#/definitions/successResponseCreatePet"
-              }
-            }
-          }
-        }
-    },
-
-    "/msdapi/project/pet/:id": {
-        "delete":{
-          "tags":["Pets"],
-          "description":"Deletes a pet based on its id",
-          "operationId":"delete",
-          "produces": [
-            "application/json"
-          ],
-          "parameters":[
-              {
-                "name": "someVariable",
-                "in": "path",
-                "description": "ID to delete",
-                "required": true,
-                "type": "string",
-                "schema": {
-                "$ref": "#/definitions/deletePet"
-                }
-              }
-            ],
-          "responses": {
-            "200": {
-              "description": "No response"
-            }
-          }
-        },
-      "get":{
-          "tags": [ "Pets"],
-          "description": "Returns the status of a pet",
-          "operationId": "findById",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-              {
-                "name": "ID",
-                "in": "path",
-                "description": "pass the Id to fetch in the URL parameter",
-                "required": false,
-                "type": "string",
-                "schema": {
-                  "$ref": "#/definitions/getById"
-                }
-              }
-            ],
-        "responses": {
-            "200": {
-              "description": "response",
-              "schema": {
-                "$ref": "#/definitions/getPetById"
-              }
-            }
-          }
-        },
-      "put": {
+      "post": {
         "tags": ["Pets"],
-        "description": "This api modifies a pet in the database",
+        "description": "This api creates a pet in the database",
         "operationId": "for the URL",
         "produces": [
           "application/json"
@@ -308,6 +239,93 @@
             "name": "Job Parameters",
             "in": "body",
             "description": "Job to add to the database",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createPet"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a json of the pet created",
+            "schema": {
+              "$ref": "#/definitions/successResponseCreatePet"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/pet/{id}": {
+      "delete":{
+        "tags":["Pets"],
+        "description":"Deletes a pet based on its id",
+        "operationId":"delete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of the pet to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response"
+          }
+        }
+      },
+      "get":{
+        "tags": [ "Pets"],
+        "description": "Returns the status of a pet",
+        "operationId": "findById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "pass the Id to fetch in the URL parameter",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/getById"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "response",
+            "schema": {
+              "$ref": "#/definitions/getPetById"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Pets"],
+        "description": "This api modifies a pet in the database",
+        "operationId": "for the URL",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of the pet to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Pet",
+            "in": "body",
+            "description": "the updated Pet Object",
             "required": true,
             "schema": {
               "$ref": "#/definitions/createPet"
@@ -326,48 +344,264 @@
     },
 
     "/msdapi/project/listAllPets": {
-        "get": {
-          "tags": ["Pets"],
-          "description": "Lists all the pets in the database",
-          "operationId": "getAllPets",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-              {
-                "schema": {
-                  "$ref": "#/definitions/getAllPets"
-                } 
-              }
-          ],
-          "responses": {
-            "200": {
-              "description": "lists all the pets in json format"
+      "get": {
+        "tags": ["Pets"],
+        "description": "Lists all the pets in the database",
+        "operationId": "getAllPets",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/definitions/getAllPets"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "lists all the pets in json format"
+          }
         }
+      }
     },
 
     "msdapi/project/:category": {
       "get": {
-          "tags": ["Pets"],
-          "description": "Lists all the pets in the category, irrrespective of availability",
-          "operationId": "getPetsByAvailability",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "schema": {
-                "$ref": "#/definitions/getByCategory"
-              }
-            }
-          ],
-          "response": {
-            "200": {
-
+        "tags": ["Pets"],
+        "description": "Lists all the pets in the category, irrrespective of availability",
+        "operationId": "getPetsByAvailability",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/definitions/getByCategory"
             }
           }
+        ],
+        "response": {
+          "200": {
+
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/user/{userId}/question": {
+      "post": {
+        "tags":["Question"],
+        "description": "Create a new question object for the given user",
+        "operationId": "createQuestion",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Question Body",
+            "in": "body",
+            "description": "The new question to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createQuestion"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user who posted the question",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A unique question ID will be returned after creating a question",
+            "schema": {
+              "$ref": "#/definitions/createQuestionResponse"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/question/{questionId}": {
+      "delete":{
+        "tags":["Question"],
+        "description":"Deletes a question",
+        "operationId":"deleteQuestion",
+        "produces": [
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name": "questionId",
+            "in": "path",
+            "description": "ID of the question to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "delete response"
+          }
+        }
+      },
+      "get": {
+        "tags": [ "Question"],
+        "description": "Retrieve a question object",
+        "operationId": "getQuestionById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "description": "ID of the question to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A question object",
+            "schema": {
+              "$ref": "#/definitions/question"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/pet/{userId}/comments": {
+      "post": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Create a new comment object for the given user",
+        "operationId": "createComment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Comment Body",
+            "in": "body",
+            "description": "The new comment to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user who posted the comment",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A unique comment ID will be returned after creating a question",
+            "schema": {
+              "$ref": "#/definitions/createCommentResponse"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/user/{userId}/comments": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Retrieve a list of comments for the given user",
+        "operationId": "getCommentForUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comments posted by the user with the given userId",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/pet/{petId}/comments": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Retrieve a list of comments for the given pet",
+        "operationId": "getCommentForPet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "path",
+            "description": "ID of the pet",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comments posted to the pet with the given Id",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/comments/{commentId}": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Retrieve a comment object with the given ID",
+        "operationId": "getComment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "ID of the comment to be retrieved",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comment with the requested ID",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
       }
     }
   },
@@ -677,12 +911,12 @@
     },
 
     "getById": {
-        "properties": {
-          "petId":{
-              "type":"string",
-              "example":"idOfPet"
-            }
+      "properties": {
+        "petId":{
+          "type":"string",
+          "example":"idOfPet"
         }
+      }
     },
 
     "getAllPets": {
@@ -735,25 +969,25 @@
     },
 
     "deletePet": {
-        "properties": {
-          "petId":{
-              "type":"string",
-              "example":"pass id of a pet in the parameter of the url"
-            }
-        } 
+      "properties": {
+        "petId":{
+          "type":"string",
+          "example":"pass id of a pet in the parameter of the url"
+        }
+      }
     },
 
     "getByCategory": {
-        "properties": {
-            "petCategory": {
-              "type": "String",
-              "example": "Dog"
-            }
+      "properties": {
+        "petCategory": {
+          "type": "String",
+          "example": "Dog"
         }
+      }
     },
 
     "400error" : {
-       "properties": {
+      "properties": {
         "message": {
           "type": "string",
           "example" : "400 Bad Request"
@@ -772,6 +1006,93 @@
           "required": true,
           "type": "string",
           "example": "eve"
+        }
+      }
+    },
+
+    "createQuestion": {
+      "properties": {
+        "title": {
+          "required":true,
+          "type": "string",
+          "example": "How can I adopt a cat?"
+        },
+        "content": {
+          "required":true,
+          "type":"string",
+          "example": "Could anyone show me the steps to adopt a pet?"
+        }
+      }
+    },
+
+    "createQuestionResponse": {
+      "properties": {
+        "questionId": {
+          "required": true,
+          "type" : "string",
+          "example" : "12321432423"
+        }
+      }
+    },
+
+    "question": {
+      "properties": {
+        "userId": {
+          "required":true,
+          "type": "string",
+          "example": "user12345"
+        },
+        "title": {
+          "required":true,
+          "type": "string",
+          "example": "How can I adopt a cat?"
+        },
+        "content": {
+          "required":true,
+          "type":"string",
+          "example": "Could anyone show me the steps to adopt a pet?"
+        }
+      }
+    },
+
+    "deleteQuestion": {
+      "properties": {
+        "questionId": {
+          "required": true,
+          "type" : "string",
+          "example" : "234344234234"
+        }
+      }
+    },
+
+    "createCommentResponse": {
+      "properties": {
+        "commentId": {
+          "required": true,
+          "type": "string",
+          "example": "123456"
+        }
+      }
+    },
+
+    "comment": {
+      "properties": {
+        "createdAt": {
+          "required": true
+        },
+        "comments": {
+          "required": true,
+          "type": "string",
+          "example": "This is a sample comment."
+        },
+        "username": {
+          "required": true,
+          "type": "string",
+          "example": "SampleUser"
+        },
+        "emails": {
+          "required": false,
+          "example": "[12345@gmail.com]"
         }
       }
     }
