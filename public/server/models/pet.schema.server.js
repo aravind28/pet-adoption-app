@@ -8,7 +8,7 @@ module.exports = function(app, mongoose){
 		petAvailability : Boolean,
         adoptedBy : String,
 		// id's of users who like this pet
-		favorites: [String],
+		favorites: [String]
 	}, {collection: 'pets'});
 	return PetSchema;
 };

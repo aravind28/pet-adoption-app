@@ -236,9 +236,9 @@
         ],
         "parameters": [
           {
-            "name": "Job Parameters",
+            "name": "Pet Object",
             "in": "body",
-            "description": "Job to add to the database",
+            "description": "Pet to add to the database",
             "required": true,
             "schema": {
               "$ref": "#/definitions/createPet"
@@ -302,7 +302,7 @@
           "200": {
             "description": "response",
             "schema": {
-              "$ref": "#/definitions/getPetById"
+              "$ref": "#/definitions/pet"
             }
           }
         }
@@ -366,24 +366,57 @@
       }
     },
 
-    "msdapi/project/:category": {
+    "/msdapi/project/pet/availability/{availability}": {
       "get": {
         "tags": ["Pets"],
-        "description": "Lists all the pets in the category, irrrespective of availability",
-        "operationId": "getPetsByAvailability",
+        "description": "Lists all the pets with the given availability",
+        "operationId": "getPetByAvailability",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "schema": {
-              "$ref": "#/definitions/getByCategory"
-            }
+            "name": "availability",
+            "in": "path",
+            "description": "availability of the pets that you want to search",
+            "required": true,
+            "type": "boolean"
           }
         ],
         "response": {
           "200": {
+            "description": "response",
+            "schema": {
+              "$ref": "#/definitions/pet"
+            }
+          }
+        }
+      }
+    },
 
+    "/msdapi/project/pet/category/{category}": {
+      "get": {
+        "tags": ["Pets"],
+        "description": "Lists all the pets that match the given category",
+        "operationId": "getPetByCategory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "description": "category of the pets that you want to search, like cat, dog or fish",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "response",
+            "schema": {
+              "$ref": "#/definitions/pet"
+            }
           }
         }
       }
@@ -928,7 +961,7 @@
       }
     },
 
-    "getPetById": {
+    "pet": {
       "properties": {
         "petName": {
           "required":true,
