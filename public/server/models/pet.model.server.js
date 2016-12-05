@@ -120,9 +120,9 @@ module.exports = function(app, db, mongoose, userModel){
         }
     }
 
-    function getPetsByAvailability(){
+    function getPetsByAvailability(availability){
 		var deferred = q.defer();
-		PetMode.find({"petAvailability" : True}, function(err, results){
+		PetModel.find({"petAvailability" : availability}, function(err, results){
 			if(err){
 				throw err;
 			}

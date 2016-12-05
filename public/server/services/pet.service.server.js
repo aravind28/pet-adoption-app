@@ -8,8 +8,8 @@ module.exports = function(app, petModel){
 	app.post('/msdapi/project/petfavoritelist/:petid', createFavoriteList);
 	app.get('/msdapi/project/getfavoritelist/:petid/user', getFavoriteList);
 	app.get('/msdapi/project/listallpets', listAllPets);
-    app.get('/msdapi/project/getByAvailability', getPetByAvailability);
-	app.get('msdapi/project/:category', getPetByCategory);
+    app.get('/msdapi/project/pet/availability/:availability', getPetByAvailability);
+	app.get('/msdapi/project/pet/category/:category', getPetByCategory);
 
 	function createPet(req, res){
 		var newPet = req.body;
@@ -143,8 +143,10 @@ module.exports = function(app, petModel){
 	}
 
 	function getPetByAvailability(req, res){
-		model
-			.getPetByAvailability()
+		var availability = req.params.availability;
+
+		petModel
+			.getPetByAvailability(availability)
 			.then(function(result, err){
 			 	if(err){
 			 		throw err;
@@ -154,9 +156,9 @@ module.exports = function(app, petModel){
 	}
 
 	function getPetByCategory(req, res){
-		var category = req.body;
-		model
-			.getPetsByCategory()
+		var category = req.params.category;
+		petModel
+			.getPetsByCategory(category)
 			.then(function(result, err){
 			 	if(err){
 			 		throw(err);
