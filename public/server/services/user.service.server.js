@@ -19,7 +19,6 @@ module.exports = function(app, userModel){
     app.post('/msdapi/project/petfavoritelist', createFavoriteList);
     app.post("/msdapi/project/admin/user", auth, addadmin);
     app.get("/msdapi/project/admin/user", getusers);
-    app.put("/msdapi/project/admin/user/:id", auth, adminupdate);
 
     passport.use('MSDAPI', new LocalStrategy(projectLocalStrategy));
 
@@ -227,40 +226,4 @@ module.exports = function(app, userModel){
         // }
     }
 
-    function adminupdate(req, res){
-        var user = req.body;
-        if(!isAdmin(req.user)){
-            delete user.roles;
-        }
-        if(typeof user.roles == "string"){
-            user.roles = user.roles.split(",");
-        }
-
-        if(user.password.length > 0) {
-            user.password = bcrypt.hashSync(user.password);
-        }
-        else{
-            delete user.password;
-        }
-
-        userModel
-            .updateUser(req.params.id, user)
-            .then(
-                function (updateduser) {
-                    res.json(updateduser);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            )
-            .then(
-                function (users) {
-                    res.json(users);
-                },
-
-                function(err){
-                    res.status(400).send(err);
-                }
-            );
-    }
 }
