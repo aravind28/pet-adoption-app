@@ -137,7 +137,7 @@
       }
     },
 
-    "/msdproject/project/user/login":{
+    "/msdapi/project/user/login":{
       "post": {
         "tags": ["Users"],
         "description": "Checks user login",
@@ -171,7 +171,7 @@
       }
     },
 
-    "/msdproject/project/user/logout":{
+    "/msdapi/project/user/logout":{
       "post": {
         "tags": ["Users"],
         "description": "Logs out a User",
@@ -198,7 +198,7 @@
       }
     },
 
-    "/msdproject/project/user/loggedin":{
+    "/msdapi/project/user/loggedin":{
       "get": {
         "tags": ["Users"],
         "description": "Checks if the user is logged in. Used for session management.",
