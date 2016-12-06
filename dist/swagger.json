@@ -1,31 +1,143 @@
 {
   "swagger": "2.0",
+
   "info": {
     "version": "1.0.0",
     "title": "Sample spec",
     "description": "Sample spec for Swagger",
     "termsOfService": "http://swagger.io/terms/"
   },
+
   "basePath": "/",
+
   "tags" : [
     {"name": "Users",
       "description": "API for Users"
     },
-    {"name": "Pets", 
+    {"name": "Pets",
       "description": "API for Pets"
+    },
+    {"name": "Question",
+      "description": "API for creating and deleting questions"
+    },
+    {
+      "name": "Comment",
+      "description": "API for creating and retrieving comments"
     }
   ],
+
   "schemes": [
     "https"
   ],
+
   "consumes": [
     ""
   ],
+
   "produces": [
     "json"
   ],
+
   "paths": {
-    "/msdproject/project/user/login":{
+    "/msdapi/project/user":{
+      "post": {
+        "tags": ["Users"],
+        "description": "Creates a new User",
+        "operationId": "for the URL",
+        "produces": ["json"],
+        "parameters":[
+          {
+            "name": "Job Parameters",
+            "in": "body",
+            "description": "Job to create a new User",
+            "required": true,
+            "schema":{
+              "$ref": "#/definitions/createUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Creates a new user",
+            "schema": {
+              "$ref": "#/definitions/successResponseCreateUser"
+            }
+          },
+          "400":{
+            "description": "Error creating a user",
+            "schema": {
+              "$ref": "#/definitions/errorResponseCreateUser"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/user/{id}":{
+      "put":{
+        "tags": ["Users"],
+        "description": "Update details of an user",
+        "operationId": "for the URL",
+        "produces": ["json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of the user to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "User",
+            "in": "body",
+            "description": "the updated User object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates the details of an existing User successfully",
+            "schema": {
+              "$ref": "#/definitions/successResponseUpdateUser"
+            }
+          },
+          "400":{
+            "description": "Error Updating details of a user",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "description": "Deletes a User",
+        "operationId": "delete",
+        "produces": ["json"],
+        "parameters":[
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of the user to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete a User successfully"
+          },
+          "400":{
+            "description": "Error Deleting a user"
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/user/login":{
       "post": {
         "tags": ["Users"],
         "description": "Checks user login",
@@ -58,7 +170,8 @@
         }
       }
     },
-    "/msdproject/project/user/logout":{
+
+    "/msdapi/project/user/logout":{
       "post": {
         "tags": ["Users"],
         "description": "Logs out a User",
@@ -84,7 +197,8 @@
         }
       }
     },
-    "/msdproject/project/user/loggedin":{
+
+    "/msdapi/project/user/loggedin":{
       "get": {
         "tags": ["Users"],
         "description": "Checks if the user is logged in. Used for session management.",
@@ -111,240 +225,616 @@
         }
       }
     },
-    "/msdapi/project/user":{
+
+    "/msdapi/project/pet": {
       "post": {
-        "tags": ["Users"],
-        "description": "Creates a new User",
+        "tags": ["Pets"],
+        "description": "This api creates a pet in the database",
         "operationId": "for the URL",
-        "produces": ["json"],
-        "parameters":[
-          {
-            "name": "Job Parameters",
-            "in": "body",
-            "description": "Job to create a new User",
-            "required": true,
-            "schema":{
-              "$ref": "#/definitions/createUser"
-            }
-          }
+        "produces": [
+          "application/json"
         ],
-        "response": {
-          "200": {
-            "description": "Creates a new user",
-            "schema": {
-              "$ref": "#/definitions/successResponse"
-            }
-          },
-          "400":{
-            "description": "Error creating a user",
-            "schema": {
-              "$ref": "#/definitions/errorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/msdapi/project/user/:id":{
-      "put":{
-        "tags": ["Users"],
-        "description": "Update details of an user",
-        "operationId": "for the URL",
-        "produces": ["json"],
         "parameters": [
           {
-            "name": "Job Parameters",
+            "name": "Pet Object",
             "in": "body",
-            "description": "Job to Update details of an existing User",
+            "description": "Pet to add to the database",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/updateUser"
+              "$ref": "#/definitions/createPet"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Updates the details of an existing User successfully",
-            "scehma": {
-              "$ref": "#/definitions/successResponse"
-            }
-          },
-          "400":{
-            "description": "Error Updating details of a user",
+            "description": "a json of the pet created",
             "schema": {
-              "$ref": "#/definitions/errorResponse"
+              "$ref": "#/definitions/successResponseCreatePet"
             }
           }
         }
-      },
-      "delete": {
-        "tags": ["Users"],
-        "description": "Deletes a User",
-        "operationId": "delete",
-        "produces": ["json"],
+      }
+    },
+
+    "/msdapi/project/pet/{id}": {
+      "delete":{
+        "tags":["Pets"],
+        "description":"Deletes a pet based on its id",
+        "operationId":"delete",
+        "produces": [
+          "application/json"
+        ],
         "parameters":[
           {
-            "name": "Id",
+            "name": "id",
             "in": "path",
-            "description": "To delete a User",
+            "description": "the id of the pet to be deleted",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Delete a User successfully",
-            "schema": {
-              "$ref": "#/definitions/successResponse"
-            }
-          },
-          "400":{
-            "description": "Error Deleting a user",
-            "schema": {
-              "$ref": "#/definitions/errorResponse"
-            }
+            "description": "No response"
           }
         }
-      }
-    },
-    "/msdapi/project/pet": {
-       "post": {
-          "tags": ["Pets"],
-          "description": "This api creates a pet in the database",
-          "operationId": "for the URL",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-              {
-                "name": "Job Parameters",
-                "in": "body",
-                "description": "Job to add to the database",
-                "required": true,
-                "schema": {
-                  "$ref": "#/definitions/createPet"
-                }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "a json of the pet created",
-              "schema": {
-                 "$ref": "#/definitions/400error"
-              }
-            }
-          }
-        }
-    },
-    "/msdapi/project/pet/:id": {
-        "delete":{
-          "tags":["Pets"],
-          "description":"Deletes a pet based on its id",
-          "operationId":"delete",
-          "produces": [
-            "application/json"
-          ],
-          "parameters":[
-              {
-                "name": "someVariable",
-                "in": "path",
-                "description": "ID to delete",
-                "required": true,
-                "type": "string",
-                "schema": {
-                "$ref": "#/definitions/deletePet"
-                }
-              }
-            ],
-          "responses": {
-            "200": {
-              "description": "delete response",
-              "schema":{
-                "$ref":"#/definitions/deleteRes"
-              }
-            }
-          }
-        },
+      },
       "get":{
-          "tags": [ "Pets"],
-          "description": "Returns the status of a pet",
-          "operationId": "findById",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-              {
-                "name": "ID",
-                "in": "path",
-                "description": "ID to fetch",
-                "required": false,
-                "type": "string",
-                "schema": {
-                  "$ref": "#/definitions/getById"
-                }
-              }
-            ],
+        "tags": [ "Pets"],
+        "description": "Returns the status of a pet",
+        "operationId": "findById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "pass the Id to fetch in the URL parameter",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/getById"
+            }
+          }
+        ],
         "responses": {
-            "200": {
-              "description": "response",
-              "schema": {
-                "$ref": "#/definitions/response1"
-              }
+          "200": {
+            "description": "response",
+            "schema": {
+              "$ref": "#/definitions/pet"
             }
           }
         }
       },
-    "/msdapi/project/listAllPets": {
-        "get": {
-          "tags": ["Pets"],
-          "description": "Lists all the pets in the database",
-          "operationId": "getAllPets",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-              {
-                "schema": {
-                  "$ref": "#/definitions/getAllPets"
-                } 
-              }
-          ],
-          "responses": {
-            "200":{
-                "description": "response"
+      "put": {
+        "tags": ["Pets"],
+        "description": "This api modifies a pet in the database",
+        "operationId": "for the URL",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of the pet to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Pet",
+            "in": "body",
+            "description": "the updated Pet Object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createPet"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a json of the pet modified",
+            "schema": {
+              "$ref": "#/definitions/successResponseUpdatePet"
             }
           }
         }
+      }
     },
-    "msdapi/project/:category": {
-      "get": {
-          "tags": ["Pets"],
-          "description": "Lists all the pets in the category, irrrespective of availability",
-          "operationId": "getPetsByAvailability",
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "schema": {
-                "$ref": "#/definitions/getByCategory"
-              }
-            }
-          ],
-          "response": {
-            "200": {
 
+    "/msdapi/project/listAllPets": {
+      "get": {
+        "tags": ["Pets"],
+        "description": "Lists all the pets in the database",
+        "operationId": "getAllPets",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "$ref": "#/definitions/getAllPets"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "lists all the pets in json format"
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/pet/availability/{availability}": {
+      "get": {
+        "tags": ["Pets"],
+        "description": "Lists all the pets with the given availability",
+        "operationId": "getPetByAvailability",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "availability",
+            "in": "path",
+            "description": "availability of the pets that you want to search",
+            "required": true,
+            "type": "boolean"
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "response",
+            "schema": {
+              "$ref": "#/definitions/pet"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/pet/category/{category}": {
+      "get": {
+        "tags": ["Pets"],
+        "description": "Lists all the pets that match the given category",
+        "operationId": "getPetByCategory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "description": "category of the pets that you want to search, like cat, dog or fish",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "response",
+            "schema": {
+              "$ref": "#/definitions/pet"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/user/{userId}/question": {
+      "post": {
+        "tags":["Question"],
+        "description": "Create a new question object for the given user",
+        "operationId": "createQuestion",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Question Body",
+            "in": "body",
+            "description": "The new question to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createQuestion"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user who posted the question",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A unique question ID will be returned after creating a question",
+            "schema": {
+              "$ref": "#/definitions/createQuestionResponse"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/question/{questionId}": {
+      "delete":{
+        "tags":["Question"],
+        "description":"Deletes a question",
+        "operationId":"deleteQuestion",
+        "produces": [
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name": "questionId",
+            "in": "path",
+            "description": "ID of the question to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "delete response"
+          }
+        }
+      },
+      "get": {
+        "tags": [ "Question"],
+        "description": "Retrieve a question object",
+        "operationId": "getQuestionById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "description": "ID of the question to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A question object",
+            "schema": {
+              "$ref": "#/definitions/question"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/pet/{userId}/comments": {
+      "post": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Create a new comment object for the given user",
+        "operationId": "createComment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Comment Body",
+            "in": "body",
+            "description": "The new comment to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user who posted the comment",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A unique comment ID will be returned after creating a question",
+            "schema": {
+              "$ref": "#/definitions/createCommentResponse"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/user/{userId}/comments": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Retrieve a list of comments for the given user",
+        "operationId": "getCommentForUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comments posted by the user with the given userId",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/pet/{petId}/comments": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Retrieve a list of comments for the given pet",
+        "operationId": "getCommentForPet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "path",
+            "description": "ID of the pet",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comments posted to the pet with the given Id",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/comments/{commentId}": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Retrieve a comment object with the given ID",
+        "operationId": "getComment",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "ID of the comment to be retrieved",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comment with the requested ID",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
       }
     }
   },
+
   "definitions": {
+    "createUser": {
+      "properties": {
+        "username": {
+          "required": true,
+          "type": "string",
+          "example": "name5"
+        },
+        "password": {
+          "required": true,
+          "type": "string",
+          "example": "name5"
+        },
+        "firstName": {
+          "required": true,
+          "type": "string",
+          "example": "fn5"
+        },
+        "lastName": {
+          "required": true,
+          "type": "string",
+          "example": "ln5"
+        },
+        "emails": {
+          "required": true,
+          "type": "[strings]",
+          "example": "name5@name.com"
+        },
+        "phones": {
+          "required": true,
+          "type": "[strings]",
+          "example": ["206"]
+        },
+        "favorites": {
+          "required": true,
+          "type": "[strings]",
+          "example" : []
+        },
+        "notifications": {
+          "required": true,
+          "type": "[strings]",
+          "example":[]
+        }
+      }
+    },
+
+    "successResponseCreateUser": {
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "name5"
+        },
+        "password": {
+          "type": "string",
+          "example": "$2a$10$aMh.RHL7W7kLIIa05pSMR.7H36/LCc5nOT84wAq4qM.lUvfd5dE6C"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "fn5"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "ln5"
+        },
+        "id":{
+          "type": "string",
+          "example":"5840dd847079250d3ba4bd14"
+        },
+        "notifications": {
+          "type": "[string-array]",
+          "example":[]
+        },
+        "favorites": {
+          "type": "[string-array]",
+          "example" : []
+        },
+        "phones": {
+          "type": "string array",
+          "example": ["206"]
+        },
+        "emails": {
+          "type": "[strings]",
+          "example": "name5@name.com"
+        },
+        "roles":{
+          "type": "[strings]",
+          "example":"[standard]"
+        }
+      }
+    },
+
+    "errorResponseCreateUser": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "null"
+        }
+      }
+    },
+
+    "updateUser": {
+      "properties": {
+        "username": {
+          "required": true,
+          "type": "string",
+          "example": "name5"
+        },
+        "password": {
+          "required": true,
+          "type": "string",
+          "example": "new_name5"
+        },
+        "firstName": {
+          "required": true,
+          "type": "string",
+          "example": "fn5"
+        },
+        "lastName": {
+          "required": true,
+          "type": "string",
+          "example": "ln5"
+        },
+        "emails": {
+          "required": true,
+          "type": "[strings",
+          "example": "name5@name.com"
+        },
+        "phones": {
+          "required": true,
+          "type": "[strings]",
+          "example": ["317"]
+        },
+        "favorites": {
+          "required": true,
+          "type": "[strings]",
+          "example" : []
+        },
+        "notifications": {
+          "required": true,
+          "type": "[strings]",
+          "example":[]
+        }
+      }
+    },
+
+    "successResponseUpdateUser": {
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "name5"
+        },
+        "password": {
+          "type": "string",
+          "example": "$2a$10$BTe8fDVhvhFM06g11bBSZuXKTxXU.rOtYRascuC2ATkedD1lr1cO2"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "fn5"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "ln5"
+        },
+        "id":{
+          "type": "string",
+          "example":"5840dd847079250d3ba4bd14"
+        },
+        "notifications": {
+          "type": "[string-array]",
+          "example":[]
+        },
+        "favorites": {
+          "type": "[string-array]",
+          "example" : []
+        },
+        "phones": {
+          "type": "string array",
+          "example": ["317"]
+        },
+        "emails": {
+          "type": "[strings]",
+          "example": "name5@name.com"
+        },
+        "roles":{
+          "type": "[strings]",
+          "example":"[standard]"
+        }
+      }
+    },
+
     "createPet": {
       "properties": {
         "petName": {
           "required":true,
           "type": "string",
-          "example": "Drake"
+          "example": "pet4"
         },
         "petGender": {
           "required":true,
@@ -353,8 +843,8 @@
         },
         "petAge": {
           "required":true,
-          "type":"int",
-          "exampe":4 
+          "type":"Number",
+          "example":2
         },
         "petCategory": {
           "required":true,
@@ -369,68 +859,175 @@
         "adoptedBy": {
           "required":true,
           "type":"string",
-          "example":"name1"
+          "example":""
         },
-        "favourites": {
+        "favorites": {
           "required":true,
-          "type":"string",
-          "example":"name1, name2"
-        },
-        "userFavourites": {
-          "required":true,
-          "type":"string",
-          "example":"name1, name2"
+          "type":"[string]",
+          "example":"[]"
         }
       }
     },
+
+    "successResponseCreatePet": {
+      "properties": {
+        "petName": {
+          "type": "string",
+          "example": "pet4"
+        },
+        "petGender": {
+          "type":"string",
+          "example": "male"
+        },
+        "petAge": {
+          "type":"Number",
+          "example":2
+        },
+        "petCategory": {
+          "type":"string",
+          "example":"dog"
+        },
+        "petAvailability":{
+          "type":"boolean",
+          "example":true
+        },
+        "adoptedBy": {
+          "type":"string",
+          "example":""
+        },
+        "id": {
+          "type":"string",
+          "example":"5840e8fb7079250d3ba4bd15"
+        },
+        "favorites": {
+          "type":"[string]",
+          "example":"[]"
+        }
+      }
+    },
+
+    "successResponseUpdatePet" : {
+      "properties": {
+        "petName": {
+          "type": "string",
+          "example": "pet4"
+        },
+        "petGender": {
+          "type":"string",
+          "example": "male"
+        },
+        "petAge": {
+          "type":"Number",
+          "example":2
+        },
+        "petCategory": {
+          "type":"string",
+          "example":"dog"
+        },
+        "petAvailability":{
+          "type":"boolean",
+          "example":true
+        },
+        "adoptedBy": {
+          "type":"string",
+          "example":""
+        },
+        "id": {
+          "type":"string",
+          "example":"5840e8fb7079250d3ba4bd15"
+        },
+        "favorites": {
+          "type":"[string]",
+          "example":"[]"
+        }
+      }
+    },
+
     "getById": {
-        "properties": {
-          "petId":{
-              "type":"string",
-              "example":"idOfPet"
-            }
+      "properties": {
+        "petId":{
+          "type":"string",
+          "example":"idOfPet"
         }
+      }
     },
+
+    "getAllPets": {
+      "properties": {
+        "petId":{
+          "type":"string",
+          "example":"nothing to pass as paramater"
+        }
+      }
+    },
+
+    "pet": {
+      "properties": {
+        "petName": {
+          "required":true,
+          "type": "string",
+          "example": "pet4"
+        },
+        "petGender": {
+          "required":true,
+          "type":"string",
+          "example": "male"
+        },
+        "petAge": {
+          "required":true,
+          "type":"Number",
+          "example":2
+        },
+        "petCategory": {
+          "required":true,
+          "type":"string",
+          "example":"dog"
+        },
+        "petAvailability":{
+          "required":true,
+          "type":"boolean",
+          "example":true
+        },
+        "adoptedBy": {
+          "required":true,
+          "type":"string",
+          "example":""
+        },
+        "favorites": {
+          "required":true,
+          "type":"[string]",
+          "example":"[]"
+        }
+      }
+    },
+
     "deletePet": {
-        "properties": {
-          "petId":{
-              "type":"string",
-              "example":"idOfAnPet"
-            }
-        } 
-    },
-    "getByCategory": {
-        "properties": {
-            "petCategory": {
-              "type": "String",
-              "example": "Dog"
-            }
+      "properties": {
+        "petId":{
+          "type":"string",
+          "example":"pass id of a pet in the parameter of the url"
         }
+      }
     },
+
+    "getByCategory": {
+      "properties": {
+        "petCategory": {
+          "type": "String",
+          "example": "Dog"
+        }
+      }
+    },
+
     "400error" : {
-       "properties": {
+      "properties": {
         "message": {
           "type": "string",
           "example" : "400 Bad Request"
         }
       }
     },
-    "successResponse": {
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "Success"
-        }
-      }
-    },
-    "errorResponse": {
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "Error"
-        }
-      }
-    },
+
     "loginUser": {
       "properties": {
         "username": {
@@ -445,65 +1042,91 @@
         }
       }
     },
-    "createUser": {
+
+    "createQuestion": {
       "properties": {
-        "firstName": {
-          "required": true,
+        "title": {
+          "required":true,
           "type": "string",
-          "example": "alice"
+          "example": "How can I adopt a cat?"
         },
-        "lastName": {
-          "required": true,
-          "type": "string",
-          "example": "eve"
-        },
-        "password": {
-          "required": true,
-          "type": "string",
-          "example": "aliceeve"
-        },
-        "emails": {
-          "required": true,
-          "type": "string array",
-          "example": "alice@eve.com, aliceeve@dummy.com"
-        },
-        "phones": {
-          "required": true,
-          "type": "string array",
-          "example": "111-111-1111, 222-222-2222"
+        "content": {
+          "required":true,
+          "type":"string",
+          "example": "Could anyone show me the steps to adopt a pet?"
         }
       }
     },
-    "updateUser": {
-      "username": {
-        "required": true,
-        "type": "string",
-        "example": "alice123"
-      },
-      "password": {
-        "required": true,
-        "type": "string",
-        "example": "eve123"
-      },
-      "firstName": {
-        "required": true,
-        "type": "string",
-        "example": "alice"
-      },
-      "lastName": {
-        "required": true,
-        "type": "string",
-        "example": "eve"
-      },
-      "emails": {
-        "required": true,
-        "type": "string array",
-        "example": "alice@eve.com"
-      },
-      "phones": {
-        "required": true,
-        "type": "string array",
-        "example": "111-111-1111"
+
+    "createQuestionResponse": {
+      "properties": {
+        "questionId": {
+          "required": true,
+          "type" : "string",
+          "example" : "12321432423"
+        }
+      }
+    },
+
+    "question": {
+      "properties": {
+        "userId": {
+          "required":true,
+          "type": "string",
+          "example": "user12345"
+        },
+        "title": {
+          "required":true,
+          "type": "string",
+          "example": "How can I adopt a cat?"
+        },
+        "content": {
+          "required":true,
+          "type":"string",
+          "example": "Could anyone show me the steps to adopt a pet?"
+        }
+      }
+    },
+
+    "deleteQuestion": {
+      "properties": {
+        "questionId": {
+          "required": true,
+          "type" : "string",
+          "example" : "234344234234"
+        }
+      }
+    },
+
+    "createCommentResponse": {
+      "properties": {
+        "commentId": {
+          "required": true,
+          "type": "string",
+          "example": "123456"
+        }
+      }
+    },
+
+    "comment": {
+      "properties": {
+        "createdAt": {
+          "required": true
+        },
+        "comments": {
+          "required": true,
+          "type": "string",
+          "example": "This is a sample comment."
+        },
+        "username": {
+          "required": true,
+          "type": "string",
+          "example": "SampleUser"
+        },
+        "emails": {
+          "required": false,
+          "example": "[12345@gmail.com]"
+        }
       }
     }
   }

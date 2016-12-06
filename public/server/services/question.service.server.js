@@ -1,6 +1,7 @@
 module.exports = function(app, questionModel){
     
     app.post('/msdapi/project/user/:userId/question', createQuestion);
+    app.get('/msdapi/project/question/:id', getQuestionById);
     app.delete('/msdapi/project/question/:id', deleteQuestion);
     
     function createQuestion(req, res) {
@@ -14,6 +15,14 @@ module.exports = function(app, questionModel){
         questionModel.createQuestion(newQuestion).then(function(result) {
             res.jsonp(result); 
         });
+    }
+
+    function getQuestionById(req, res) {
+        questionModel.getQuestionById(req.params.id).then(
+            function(result, err) {
+                res.jsonp(result);
+            }
+        );
     }
     
     function deleteQuestion(req, res) {

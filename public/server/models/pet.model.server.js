@@ -68,13 +68,15 @@ module.exports = function(app, db, mongoose, userModel){
     }
 
 	function listAllPets(){
-		var deferred = q.defer();
-		PetModel.find(function(err, results){
-			if(err){
-				throw err;
-			}
-			deferred.resolve(results);
-		});
+		return PetModel.find();
+		// var deferred = q.defer();
+		// PetModel.find(function(err, results){
+		// 	if(err){
+		// 		throw err;
+		// 	}
+			// deferred.resolve(results);
+			return results;
+		// });
 	}
 
 	function findPetById(petId){
@@ -118,9 +120,9 @@ module.exports = function(app, db, mongoose, userModel){
         }
     }
 
-    function getPetsByAvailability(){
+    function getPetsByAvailability(availability){
 		var deferred = q.defer();
-		PetMode.find({"petAvailability" : True}, function(err, results){
+		PetModel.find({"petAvailability" : availability}, function(err, results){
 			if(err){
 				throw err;
 			}
