@@ -31,11 +31,11 @@
   ],
 
   "consumes": [
-    ""
+    "application/json"
   ],
 
   "produces": [
-    "json"
+    "application/json"
   ],
 
   "paths": {
