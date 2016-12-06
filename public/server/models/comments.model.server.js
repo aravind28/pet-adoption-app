@@ -9,29 +9,34 @@ module.exports = function (app, db, mongoose, petModel) {
 
     var api = {
         savecomments: savecomments,
-        findCommentsById: findCommentsById
+        findCommentsById: findCommentsById,
+        getCommentsForPet: getCommentsForPet,
+        getCommentsForUser: getCommentsForUser
     };
     return api;
 
     function savecomments(user, petId){
 
-        var comments ={
+        var comment ={
             createAt : Date.now(),
             comments: user.comments,
-            username: user.username,
-            emails: user.emails
-        }
+            userId: user._id,
+            emails: user.emails,
+            petId : petId
+        };
 
-        return petModel.findById(petId)
-            .then(
-                function (app) {
-                    app.comments.push(comments);
-                    return app.save();
-                }
-            )
+        return CommentsModel.create(comment);
     }
 
     function findCommentsById(commentId){
-        return CommentsModel.findById(commentId).select("comments");
+        return CommentsModel.findById(commentId);
+    }
+
+    function getCommentsForPet(petId) {
+        return CommentsModel.find({petId : petId});
+    }
+
+    function getCommentsForUser(userId) {
+        return CommentsModel.find({userId : userId});
     }
 }
