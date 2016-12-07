@@ -70,10 +70,66 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": ["Users"],
+        "description": "Gets all Users",
+        "operationId": "getAllUsers",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "scehma": {
+              "$ref": "#/definitions/getAllUsers"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lists all Users",
+            "scehma": {
+              "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400": {
+            "description": "No users present",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
       }
     },
 
     "/msdapi/project/user/{id}":{
+      "get":{
+        "tags": ["Users"],
+        "description": "Get a User by ID",
+        "operationId": "for the URL",
+        "produces": ["json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of the user to retrieve",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates the details of an existing User successfully",
+            "schema": {
+              "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400":{
+            "description": "Error Updating details of a user",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      },
       "put":{
         "tags": ["Users"],
         "description": "Update details of an user",
