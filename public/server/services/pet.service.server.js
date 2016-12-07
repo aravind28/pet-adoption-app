@@ -73,14 +73,6 @@ module.exports = function(app, petModel){
 					res.status(400).send(err);
 				}
 			)
-			.then(
-				function (pets) {
-					res.json(pets);
-				},
-				function (err) {
-					res.status(400).send(err);
-				}
-			)
 	}
 
 	function createFavoriteList(req, res){
