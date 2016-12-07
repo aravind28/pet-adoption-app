@@ -1,5 +1,5 @@
 var q = require('q')
-module.exports = function(app, db, mongoose) {
+module.exports = function(app, db, mongoose, userModel) {
     var QuestionSchema = require("./question.schema.server.js")(app, mongoose);
     var QuestionModel = mongoose.model("QuestionModel", QuestionSchema);
 
@@ -11,9 +11,19 @@ module.exports = function(app, db, mongoose) {
     
     function createQuestion(newQuestion) {
         var deferred = q.defer();
-        QuestionModel.create(newQuestion, function(err, results) {
-            deferred.resolve(results);
-        });
+        var userId = newQuestion.userId;
+
+        userModel.findUserById(userId).then(
+            function(res, err) {
+                if (!res) {
+                    deferred.resolve(null);
+                } else {
+                    QuestionModel.create(newQuestion, function(err, results) {
+                        deferred.resolve(results);
+                    });
+                }
+            }
+        );
         return deferred.promise;
     }
 

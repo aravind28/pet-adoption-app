@@ -11,19 +11,22 @@ module.exports = function (app, commentsModel) {
 
 
     function postcomments(req, res) {
-        commentsModel
-            .savecomments(req.body, req.params.id)
-            .then(
-            function (response) {
-                if (response) {
-                    res.json(response);
-                }
-            },
+        var promise = commentsModel.savecomments(req.body, req.params.id);
+        if (promise) {
+            promise.then(
+                function (response) {
+                    if (response) {
+                        res.json(response);
+                    }
+                },
 
-            function (err) {
-                res.status(400).send(err);
-            }
-        )
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+        } else {
+            res.jsonp(null);
+        }
     }
 
     function getcomment(req, res) {

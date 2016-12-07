@@ -2,7 +2,7 @@
  * Created by Akshay on 19-10-2016.
  */
 
-module.exports = function (app, db, mongoose, petModel) {
+module.exports = function (app, db, mongoose, petModel, userModel) {
 
     var CommentsSchema = require("./comments.schema.server.js")(app, mongoose);
     var CommentsModel = mongoose.model('CommentsModel', CommentsSchema);
@@ -16,7 +16,6 @@ module.exports = function (app, db, mongoose, petModel) {
     return api;
 
     function savecomments(user, petId){
-
         var comment ={
             createAt : Date.now(),
             comments: user.comments,
@@ -25,7 +24,19 @@ module.exports = function (app, db, mongoose, petModel) {
             petId : petId
         };
 
-        return CommentsModel.create(comment);
+        userModel.findUserById(user._id).then(function(res, err) {
+            if(!res) {
+                return null;
+            } else {
+                petModel.findPetById(petId).then(function(res2, err2) {
+                    if (!res2) {
+                        return null;
+                    } else {
+                        return CommentsModel.create(comment);
+                    }
+                });
+            }
+        });
     }
 
     function findCommentsById(commentId){
