@@ -70,10 +70,66 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": ["Users"],
+        "description": "Gets all Users",
+        "operationId": "getAllUsers",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "scehma": {
+              "$ref": "#/definitions/getAllUsers"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lists all Users",
+            "scehma": {
+              "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400": {
+            "description": "No users present",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
       }
     },
 
     "/msdapi/project/user/{id}":{
+      "get":{
+        "tags": ["Users"],
+        "description": "Get a User by ID",
+        "operationId": "for the URL",
+        "produces": ["json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of the user to retrieve",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates the details of an existing User successfully",
+            "schema": {
+              "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400":{
+            "description": "Error Updating details of a user",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      },
       "put":{
         "tags": ["Users"],
         "description": "Update details of an user",
@@ -220,6 +276,36 @@
             "description": "Error if user is not logged-in",
             "schema": {
               "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/petFavoriteList": {
+      "post": {
+        "tags": ["Users"],
+        "description": "This api creates a favorite list for user to watch",
+        "operationId": "for the URL",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Favorite Object",
+            "in": "body",
+            "description": "petID and userId to add to favorite list",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createFavoriteList"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a json of the pet created",
+            "schema": {
+              "$ref": "#/definitions/successResponseFavoriteList"
             }
           }
         }
@@ -514,7 +600,7 @@
         "tags": [
           "Comment"
         ],
-        "description": "Create a new comment object for the given user",
+        "description": "Create a new comment object",
         "operationId": "createComment",
         "produces": [
           "application/json"
@@ -526,7 +612,7 @@
             "description": "The new comment to be created",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Comment"
+              "$ref": "#/definitions/createComment"
             }
           },
           {
@@ -685,6 +771,22 @@
       }
     },
 
+    "createFavoriteList": {
+
+      "properties": {
+        "userId": {
+          "required": true,
+          "type": "string",
+          "example": "583f929ac1bc4d0ed0c2aa78"
+        },
+        "petId": {
+          "required": true,
+          "type": "string",
+          "example": "583f933ec1bc4d0ed0c2aa7a"
+        }
+      }
+    },
+
     "successResponseCreateUser": {
       "properties": {
         "username": {
@@ -735,6 +837,51 @@
         "message": {
           "type": "string",
           "example": "null"
+        }
+      }
+    },
+
+    "successResponseFavoriteList":{
+      "properties": {
+        "id":{
+          "type": "string",
+          "example":"5840dd847079250d3ba4bd14"
+        },
+        "username": {
+          "type": "string",
+          "example": "name5"
+        },
+        "password": {
+          "type": "string",
+          "example": "$2a$10$aMh.RHL7W7kLIIa05pSMR.7H36/LCc5nOT84wAq4qM.lUvfd5dE6C"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "fn5"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "ln5"
+        },
+        "notifications": {
+          "type": "[string-array]",
+          "example":[]
+        },
+        "favorites": {
+          "type": "[string-array]",
+          "example" : ["583f933ec1bc4d0ed0c2aa7a", "583f9343c1bc4d0ed0c2aa7b"]
+        },
+        "phones": {
+          "type": "string array",
+          "example": ["206"]
+        },
+        "emails": {
+          "type": "[strings]",
+          "example": "name5@name.com"
+        },
+        "roles":{
+          "type": "[strings]",
+          "example":"[standard]"
         }
       }
     },
@@ -1108,24 +1255,26 @@
       }
     },
 
-    "comment": {
+    "createComment": {
       "properties": {
-        "createdAt": {
-          "required": true
-        },
         "comments": {
           "required": true,
           "type": "string",
           "example": "This is a sample comment."
         },
-        "username": {
+        "userId": {
           "required": true,
           "type": "string",
-          "example": "SampleUser"
+          "example": "5840dd847079250d3ba4bd14"
         },
         "emails": {
           "required": false,
           "example": "[12345@gmail.com]"
+        },
+        "petId": {
+          "required": true,
+          "type": "string",
+          "example": "5840e8fb7079250d3ba4bd15"
         }
       }
     }

@@ -15,10 +15,11 @@ module.exports = function(app, userModel){
     app.get("/msdapi/project/user/loggedin", loggedin);
     app.post('/msdapi/project/user', createUser);
     app.put('/msdapi/project/user/:id', updateUser);
+    app.get("/msdapi/project/user/:id", getuserbyid);
     app.delete('/msdapi/project/user/:id', deleteUser);
     app.post('/msdapi/project/petfavoritelist', createFavoriteList);
     app.post("/msdapi/project/admin/user", auth, addadmin);
-    app.get("/msdapi/project/admin/user", getusers);
+    app.get("/msdapi/project/user", getusers);
 
     passport.use('MSDAPI', new LocalStrategy(projectLocalStrategy));
 
@@ -26,7 +27,20 @@ module.exports = function(app, userModel){
         var userId = req.body.userId;
         var petId = req.body.petId;
         console.log(userId, petId);
-        userModel.createFavoriteList(userId, petId)
+        userModel
+            .createFavoriteList(userId, petId)
+            .then(
+                    function(user){
+                        if(user){
+                            res.json(user)
+                        }
+                        else{
+                            res.status(400).send(err);
+                        }
+                    },
+                    function(err){
+                        res.status(400).send(err);
+                    });
     }
 
     function projectLocalStrategy(username, password,done){
@@ -224,6 +238,21 @@ module.exports = function(app, userModel){
         // else{
             // res.status(403);
         // }
+    }
+
+
+    function getuserbyid(req, res){
+        userModel
+            .findUserById(req.params.id)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
     }
 
 }

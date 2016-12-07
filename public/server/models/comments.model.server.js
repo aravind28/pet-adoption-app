@@ -19,7 +19,7 @@ module.exports = function (app, db, mongoose, petModel, userModel) {
         var comment ={
             createAt : Date.now(),
             comments: user.comments,
-            userId: user._id,
+            userId: user.userId,
             emails: user.emails,
             petId : petId
         };

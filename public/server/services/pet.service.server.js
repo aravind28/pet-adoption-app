@@ -63,20 +63,11 @@ module.exports = function(app, petModel){
 	}
 
 	function getPetById(req, res){
-		petModel.findPetById(req.params.id);
 		petModel
 			.findPetById(req.params.id)
 			.then(
 				function (pet) {
 					res.json(pet);
-				},
-				function (err) {
-					res.status(400).send(err);
-				}
-			)
-			.then(
-				function (pets) {
-					res.json(pets);
 				},
 				function (err) {
 					res.status(400).send(err);
