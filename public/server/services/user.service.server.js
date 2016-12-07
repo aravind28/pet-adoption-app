@@ -27,7 +27,20 @@ module.exports = function(app, userModel){
         var userId = req.body.userId;
         var petId = req.body.petId;
         console.log(userId, petId);
-        userModel.createFavoriteList(userId, petId)
+        userModel
+            .createFavoriteList(userId, petId)
+            .then(
+                    function(user){
+                        if(user){
+                            res.json(user)
+                        }
+                        else{
+                            res.status(400).send(err);
+                        }
+                    },
+                    function(err){
+                        res.status(400).send(err);
+                    });
     }
 
     function projectLocalStrategy(username, password,done){

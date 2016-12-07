@@ -23,15 +23,12 @@ module.exports = function(app, mongoose, db) {
         UserModel.findOne({_id: userId},
             function (err, doc) {
                 if(err){
-                    console.log("position 1");
                     deferred.reject(err);
                 }
                 if(doc){
-                    console.log("position 2");
                     PetModel1.findOne({_id: petId},
                         
                         function(err, doc2){
-                            console.log("position 3");
                             if(err){
                                 deferred.reject(err);
                             }
@@ -134,7 +131,6 @@ module.exports = function(app, mongoose, db) {
     function findUserByCredentials(username, password) {
         var deferred = q.defer();
         UserModel.findOne({username : username, password : password}, function(err, result) {
-            console.log(result);
             deferred.resolve(result);
         });
         return deferred.promise;
