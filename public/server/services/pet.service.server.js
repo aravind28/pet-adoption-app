@@ -3,7 +3,7 @@ module.exports = function(app, petModel){
 	app.post('/msdapi/project/pet', createPet);
 	app.put('/msdapi/project/pet/:id', updatePet);
 	app.delete('/msdapi/project/pet/:id', deletePet);
-	app.get('/msdapi/project/getpetbyid/:id', getPetById);
+	app.get('/msdapi/project/pet/:id', getPetById);
 	app.get('/msdapi/project/listallpets', listAllPets);
 	app.post('/msdapi/project/petfavoritelist/:petid', createFavoriteList);
 	app.get('/msdapi/project/getfavoritelist/:petid/user', getFavoriteList);
