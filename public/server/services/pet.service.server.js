@@ -41,6 +41,10 @@ module.exports = function(app, petModel){
 		petModel
 			.deletePet(id)
 		    .then(function(result, err){
+				if (result) {
+					res.jsonp(result);
+				}
+
 		     	if(err){
 		     		throw err;
 		     	}
@@ -52,7 +56,6 @@ module.exports = function(app, petModel){
 			.listAllPets()
 			.then(
 				function(pets) {
-					console.log("position2");
 					res.json(pets);
 				},
 

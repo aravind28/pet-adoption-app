@@ -154,8 +154,14 @@ module.exports = function(app, userModel){
             userModel
                 .deleteUser(req.params.id)
                 .then(
-                    function(){
-                        userModel.findAllUsers();
+                    function(result){
+                        userModel.findAllUsers().then(
+                            function(users, err){
+                                if (users) {
+                                    res.status(200);
+                                    res.jsonp(users);
+                                }
+                            });
                     },
                     function (err){
                         if(err){
@@ -163,15 +169,7 @@ module.exports = function(app, userModel){
                         }
                       
                     }
-                )
-                .then(
-                    function(user){
-                        res.status(200);
-                    });
-        // }
-        // else{
-        //     res.status(403);
-        // }
+                );
     }
 
     function addadmin(req, res) {

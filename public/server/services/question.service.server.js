@@ -27,6 +27,10 @@ module.exports = function(app, questionModel){
     
     function deleteQuestion(req, res) {
         var questionId = req.params.id;
-        questionModel.deleteQuestion(questionId);
+        questionModel.deleteQuestion(questionId).then(function(result, err) {
+            if (result) {
+                res.jsonp(result);
+            }
+        });
     }
 }
