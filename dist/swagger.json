@@ -374,14 +374,14 @@
           {
             "name": "id",
             "in": "path",
-            "description": "pass the Id to fetch in the URL parameter",
+            "description": "id of the pet to retrieve",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "response",
+            "description": "response for retrieving a pet",
             "schema": {
               "$ref": "#/definitions/pet"
             }
