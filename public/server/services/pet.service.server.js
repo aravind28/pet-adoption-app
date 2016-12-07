@@ -42,7 +42,7 @@ module.exports = function(app, petModel){
 			.deletePet(id)
 		    .then(function(result, err){
 				if (result) {
-					res.jsonp(result);
+					listAllPets(req, res);
 				}
 
 		     	if(err){
