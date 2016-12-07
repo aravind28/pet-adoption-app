@@ -369,19 +369,14 @@
         "tags": [ "Pets"],
         "description": "Returns the status of a pet",
         "operationId": "findById",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["json"],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "description": "pass the Id to fetch in the URL parameter",
-            "required": false,
-            "type": "string",
-            "schema": {
-              "$ref": "#/definitions/getById"
-            }
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
