@@ -362,7 +362,7 @@
             "description": "Job to create a new Admin User",
             "required": true,
             "schema": {
-              "$ref": "#definitions/createAdmin"
+              "$ref": "#/definitions/createAdmin"
             }
           }
         ],
