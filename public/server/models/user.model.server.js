@@ -1,7 +1,7 @@
 var q = require('q')
 module.exports = function(app, mongoose, db) {
     var UserSchema = require("./user.schema.server.js")(app, mongoose);
-    var PetSchema1 = require("./pet.schema.server.js")(app, mongoose); 
+    var PetSchema1 = require("./pet.schema.server.js")(app, mongoose);
     var UserModel = mongoose.model("user", UserSchema);
     var PetModel1 = mongoose.model("petModel1", PetSchema1);
 
@@ -16,7 +16,7 @@ module.exports = function(app, mongoose, db) {
         createFavoriteList : createFavoriteList,
         createAdminUser : createAdminUser
     };
-    
+
     function createFavoriteList(userId, petId){
 
         var deferred = q.defer();
@@ -46,18 +46,18 @@ module.exports = function(app, mongoose, db) {
                             }
                         });
 
-                        // add user to favorites
-                        doc.favorites.push(petId);
-                        doc.save(function (err, doc) {
-                            if(err){
-                                deferred.reject(err);
-                            }
-                            else{
-                                deferred.resolve(doc);
-                            }
-                        });
-                    }
-                });
+                    // add user to favorites
+                    doc.favorites.push(petId);
+                    doc.save(function (err, doc) {
+                        if(err){
+                            deferred.reject(err);
+                        }
+                        else{
+                            deferred.resolve(doc);
+                        }
+                    });
+                }
+            });
         return deferred.promise;
     }
 
@@ -81,14 +81,14 @@ module.exports = function(app, mongoose, db) {
                 }
             });
     }
-    
+
     function updateUser(id, newUser) {
         var deferred = q.defer();
         UserModel.update(
-            {_id : id}, 
+            {_id : id},
             {$set : {
                 username : newUser.username,
-                password : newUser.password,        
+                password : newUser.password,
                 firstName : newUser.firstName,
                 lastName : newUser.lastName,
                 roles : newUser.roles,
@@ -98,25 +98,25 @@ module.exports = function(app, mongoose, db) {
                 favoritePets : newUser.favoritePets,
                 notifications : newUser.notifications
             }
-        },
-        function(err, result) {
-            UserModel.findOne({_id : id}, function(err, result) {
-                deferred.resolve(result);
+            },
+            function(err, result) {
+                UserModel.findOne({_id : id}, function(err, result) {
+                    deferred.resolve(result);
+                });
             });
-        });
         return deferred.promise;
     }
-    
+
     function deleteUser(id) {
         // var deferred = q.defer();
         return UserModel.remove({_id : id})//, function(err, results) {
-            // deferred.resolve({"deleted":"success"});
-            // deferred.reject(err);
-            // return {"deleted":"success"};
-       // });
+        // deferred.resolve({"deleted":"success"});
+        // deferred.reject(err);
+        // return {"deleted":"success"};
+        // });
         // return deferred.promise;
     }
-    
+
     function findUserById(id) {
         var deferred = q.defer();
         UserModel.findOne({_id : id}, function(err, result) {
@@ -124,7 +124,7 @@ module.exports = function(app, mongoose, db) {
         });
         return deferred.promise;
     }
-    
+
     function findUserByUsername(username) {
         var deferred = q.defer();
         UserModel.findOne({username : username}, function(err, result) {
@@ -144,6 +144,6 @@ module.exports = function(app, mongoose, db) {
         });
         return deferred.promise;
     }
-    
+
     return api;
 };

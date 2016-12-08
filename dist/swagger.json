@@ -18,11 +18,11 @@
       "description": "API for Pets"
     },
     {"name": "Question",
-      "description": "API for creating and deleting questions"
+      "description": "API for Questions"
     },
     {
       "name": "Comment",
-      "description": "API for creating and retrieving comments"
+      "description": "API for Comments"
     }
   ],
 
@@ -184,7 +184,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Delete a User successfully"
+            "description": "Delete a User successfully, and return all the remaining users."
           },
           "400":{
             "description": "Error Deleting a user"
@@ -467,7 +467,10 @@
         ],
         "responses": {
           "200": {
-            "description": "No response"
+            "description": "A json object that indicates if the operation succeeds and how many rows are affected.",
+            "schema": {
+              "$ref": "#/definitions/mongoRemoveResponse"
+            }
           }
         }
       },
@@ -1356,6 +1359,21 @@
           "required": true,
           "type": "string",
           "example": "5840e8fb7079250d3ba4bd15"
+        }
+      }
+    },
+
+    "mongoRemoveResponse": {
+      "properties": {
+        "ok": {
+          "required": true,
+          "type": "Number",
+          "example": 1
+        },
+        "n": {
+          "required": true,
+          "type": "Number",
+          "example": 1
         }
       }
     }

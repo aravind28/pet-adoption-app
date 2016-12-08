@@ -30,17 +30,17 @@ module.exports = function(app, userModel){
         userModel
             .createFavoriteList(userId, petId)
             .then(
-                    function(user){
-                        if(user){
-                            res.json(user)
-                        }
-                        else{
-                            res.status(400).send(err);
-                        }
-                    },
-                    function(err){
+                function(user){
+                    if(user){
+                        res.json(user)
+                    }
+                    else{
                         res.status(400).send(err);
-                    });
+                    }
+                },
+                function(err){
+                    res.status(400).send(err);
+                });
     }
 
     function projectLocalStrategy(username, password,done){
@@ -87,10 +87,10 @@ module.exports = function(app, userModel){
             .then(
                 function(usr){
                     if(usr && bcrypt.compareSync(user.password, usr.password)){
-                        res.json(usr); 
+                        res.json(usr);
                     }
                     else{
-                        res.status(401).send("unauthorized"); 
+                        res.status(401).send("unauthorized");
                     }
                 },
 
@@ -113,7 +113,7 @@ module.exports = function(app, userModel){
     function loggedin(req, res){
         res.send(req.isAuthenticated() ? req.user: '0');
     }
-    
+
     function createUser(req, res) {
 
         var user = req.body;
@@ -130,7 +130,7 @@ module.exports = function(app, userModel){
                         user.password = bcrypt.hashSync(user.password);
                         userModel.createUser(user).then(function(result){
                             res.jsonp(result);
-                        });     
+                        });
                     }
                 },
                 function (err) {
@@ -138,38 +138,38 @@ module.exports = function(app, userModel){
                 }
             );
     }
-    
+
     function updateUser(req, res) {
         var id = req.params.id;
         var newUser = req.body;
         newUser.password = bcrypt.hashSync(newUser.password);
         userModel.updateUser(id, newUser).then(function(result) {
-            res.jsonp(result); 
+            res.jsonp(result);
         });
     }
-    
+
     function deleteUser(req, res) {
 
         // if(isAdmin(req.user)){
-            userModel
-                .deleteUser(req.params.id)
-                .then(
-                    function(result){
-                        userModel.findAllUsers().then(
-                            function(users, err){
-                                if (users) {
-                                    res.status(200);
-                                    res.jsonp(users);
-                                }
-                            });
-                    },
-                    function (err){
-                        if(err){
-                            res.staus(400).send(err);
-                        }
-                      
+        userModel
+            .deleteUser(req.params.id)
+            .then(
+                function(result){
+                    userModel.findAllUsers().then(
+                        function(users, err){
+                            if (users) {
+                                res.status(200);
+                                res.jsonp(users);
+                            }
+                        });
+                },
+                function (err){
+                    if(err){
+                        res.staus(400).send(err);
                     }
-                );
+
+                }
+            );
     }
 
     function addadmin(req, res) {
@@ -242,21 +242,21 @@ module.exports = function(app, userModel){
 
     function getusers(req, res){
         // if(isAdmin(req.user)){
-            userModel
-                .findAllUsers()
-                .then(
-                    function (user) {
-                        //console.log(res.json(user));
-                        res.json(user);
-                    },
+        userModel
+            .findAllUsers()
+            .then(
+                function (user) {
+                    //console.log(res.json(user));
+                    res.json(user);
+                },
 
-                    function () {
-                        res.status(400).send(err);
-                    }
-                );
+                function () {
+                    res.status(400).send(err);
+                }
+            );
         // }
         // else{
-            // res.status(403);
+        // res.status(403);
         // }
     }
 
@@ -273,5 +273,4 @@ module.exports = function(app, userModel){
                 }
             )
     }
-
 }
