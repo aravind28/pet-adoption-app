@@ -29,7 +29,7 @@ module.exports = function(app, db, mongoose, userModel){
 					if(doc.roles === "admin"){
 						PetModel.create(newPet, function(err, results){
 							deferred.resolve(results);
-						})
+						});
 					}
 					else{
 						deferred.resolve(null);

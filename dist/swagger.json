@@ -315,7 +315,7 @@
     "/msdapi/project/pet": {
       "post": {
         "tags": ["Pets"],
-        "description": "This api creates a pet in the database",
+        "description": "This api creates a pet in the database, user needs to be an admin to create a pet",
         "operationId": "for the URL",
         "produces": [
           "application/json"
@@ -347,9 +347,7 @@
         "tags":["Pets"],
         "description":"Deletes a pet based on its id",
         "operationId":"delete",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["json"],
         "parameters":[
           {
             "name": "id",
@@ -357,6 +355,16 @@
             "description": "the id of the pet to be deleted",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "body",
+            "description": "the userId of admin",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/deletePet"
+            }
           }
         ],
         "responses": {
@@ -390,7 +398,7 @@
       },
       "put": {
         "tags": ["Pets"],
-        "description": "This api modifies a pet in the database",
+        "description": "This api modifies a pet in the database, user need to be an adim to update a pet, also after an update is complete, all the watching users are notified",
         "operationId": "for the URL",
         "produces": [
           "application/json"
@@ -973,6 +981,11 @@
 
     "createPet": {
       "properties": {
+        "userId": {
+          "required":true,
+          "type": "string",
+          "example": "5848b004222309074c757da5"
+        },
         "petName": {
           "required":true,
           "type": "string",
@@ -1145,9 +1158,9 @@
 
     "deletePet": {
       "properties": {
-        "petId":{
+        "userId":{
           "type":"string",
-          "example":"pass id of a pet in the parameter of the url"
+          "example":"5848b010222309074c757da6"
         }
       }
     },
@@ -1155,7 +1168,7 @@
     "getByCategory": {
       "properties": {
         "petCategory": {
-          "type": "String",
+          "type": "string",
           "example": "Dog"
         }
       }
