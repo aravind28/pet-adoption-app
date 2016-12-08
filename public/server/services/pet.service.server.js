@@ -25,8 +25,9 @@ module.exports = function(app, petModel){
     function updatePet(req, res) {
         var updatedPet = req.body;
         var petId = req.params.id;
+        var userId = req.body.userId;
         petModel
-        	.updatePet(petId, updatedPet)
+        	.updatePet(userId, petId, updatedPet)
             .then(function(result, err) {
             	if(err) {
                 	throw err;
