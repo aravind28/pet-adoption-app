@@ -282,6 +282,104 @@
       }
     },
 
+    "/msdapi/project/user/{userId}/comments": {
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Retrieve a list of comments for the given user",
+        "operationId": "getCommentForUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comments posted by the user with the given userId",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
+      }
+    },
+
+    "/msdapi/project/user/{userId}/question": {
+      "post": {
+        "tags":["Question"],
+        "description": "Create a new question object for the given user",
+        "operationId": "createQuestion",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Question Body",
+            "in": "body",
+            "description": "The new question to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createQuestion"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user who posted the question",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A unique question ID will be returned after creating a question",
+            "schema": {
+              "$ref": "#/definitions/createQuestionResponse"
+            }
+          }
+        }
+      }
+    },
+
+    "msdapi/project/admin/user": {
+      "post": {
+        "tags": ["Users"],
+        "description": "Creates a new Admin User",
+        "operationId": "for the URL",
+        "produces": ["json"],
+        "parameters": [
+          {
+            "name": "Job Parameters",
+            "in": "body",
+            "description": "Job to create a new Admin User",
+            "required": true,
+            "schema": {
+              "$ref": "#definitions/createAdmin"
+            }
+          }
+        ],
+        "responses":{
+          "200":{
+            "description": "Creates a new Admin user if none is present",
+            "schema": {
+              "$ref": "#/definitions/successResponseCreateUser"
+            }
+          },
+          "400":{
+            "description": "Error creating an Admin user as one is already present or username matches with other users"
+          }
+        }
+      }
+    },
+
     "/msdapi/project/petFavoriteList": {
       "post": {
         "tags": ["Users"],
@@ -511,43 +609,6 @@
       }
     },
 
-    "/msdapi/project/user/{userId}/question": {
-      "post": {
-        "tags":["Question"],
-        "description": "Create a new question object for the given user",
-        "operationId": "createQuestion",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Question Body",
-            "in": "body",
-            "description": "The new question to be created",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/createQuestion"
-            }
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "ID of the user who posted the question",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A unique question ID will be returned after creating a question",
-            "schema": {
-              "$ref": "#/definitions/createQuestionResponse"
-            }
-          }
-        }
-      }
-    },
-
     "/msdapi/project/question/{questionId}": {
       "delete":{
         "tags":["Question"],
@@ -664,36 +725,6 @@
       }
     },
 
-    "/msdapi/project/user/{userId}/comments": {
-      "get": {
-        "tags": [
-          "Comment"
-        ],
-        "description": "Retrieve a list of comments for the given user",
-        "operationId": "getCommentForUser",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "ID of the user",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The comments posted by the user with the given userId",
-            "schema": {
-              "$ref": "#/definitions/comment"
-            }
-          }
-        }
-      }
-    },
-
     "/msdapi/project/comments/{commentId}": {
       "get": {
         "tags": [
@@ -757,6 +788,51 @@
           "required": true,
           "type": "[strings]",
           "example": ["206"]
+        },
+        "favorites": {
+          "required": true,
+          "type": "[strings]",
+          "example" : []
+        },
+        "notifications": {
+          "required": true,
+          "type": "[strings]",
+          "example":[]
+        }
+      }
+    },
+
+    "createAdmin": {
+      "properties": {
+        "username": {
+          "required": true,
+          "type": "string",
+          "example": "admin"
+        },
+        "password": {
+          "required": true,
+          "type": "string",
+          "example": "admin"
+        },
+        "firstName": {
+          "required": true,
+          "type": "string",
+          "example": "admin"
+        },
+        "lastName": {
+          "required": true,
+          "type": "string",
+          "example": "admin"
+        },
+        "emails": {
+          "required": true,
+          "type": "[strings]",
+          "example": "admin@admin.com"
+        },
+        "phones": {
+          "required": true,
+          "type": "[strings]",
+          "example": ["777"]
         },
         "favorites": {
           "required": true,

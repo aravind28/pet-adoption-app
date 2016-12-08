@@ -13,7 +13,8 @@ module.exports = function(app, mongoose, db) {
         findUserByUsername : findUserByUsername,
         findAllUsers : findAllUsers,
         findUserByCredentials : findUserByCredentials,
-        createFavoriteList : createFavoriteList
+        createFavoriteList : createFavoriteList,
+        createAdminUser : createAdminUser
     };
     
     function createFavoriteList(userId, petId){
@@ -66,6 +67,19 @@ module.exports = function(app, mongoose, db) {
             deferred.resolve(results);
         });
         return deferred.promise;
+    }
+
+    function createAdminUser(newUser){
+        //console.log(newUser);
+        UserModel.findOne({roles : newUser.roles},
+            function (err, doc) {
+                if(doc == null){
+                    return UserModel.create(newUser);
+                }
+                else{
+                    return err;
+                }
+            });
     }
     
     function updateUser(id, newUser) {

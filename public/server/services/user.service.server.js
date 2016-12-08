@@ -18,7 +18,7 @@ module.exports = function(app, userModel){
     app.get("/msdapi/project/user/:id", getuserbyid);
     app.delete('/msdapi/project/user/:id', deleteUser);
     app.post('/msdapi/project/petfavoritelist', createFavoriteList);
-    app.post("/msdapi/project/admin/user", auth, addadmin);
+    app.post("/msdapi/project/admin/user", addadmin);
     app.get("/msdapi/project/user", getusers);
 
     passport.use('MSDAPI', new LocalStrategy(projectLocalStrategy));
@@ -173,49 +173,71 @@ module.exports = function(app, userModel){
     }
 
     function addadmin(req, res) {
+
         var user = req.body;
+        user.roles = "admin";
 
-        if (isAdmin(req.user)) {
-            userModel
-                .findUserByUsername(user.username)
-                .then(
-                    function (usr) {
-                        if (usr) {
-                            res.json(null);
-                        }
-                        else {
-                            user.password = bcrypt.hashSync(user.password);
-                            userModel.createUser(user)
-                                .then(
-                                    function (doc) {
-                                        res.json(doc);
-                                    }
-                                );
-                        }
-                    },
+        userModel
+            .findUserByUsername(user.username)
+            .then(
+                function (usr) {
+                    if(usr){
+                        res.json(null);
+                    }
+                    else{
+                        user.password = bcrypt.hashSync(user.password);
+                        userModel.createAdminUser(user).then(function (result) {
+                            res.jsonp(result);
+                        });
+                    }
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
 
-                    function (err) {
-                        res.status(400).send(err);
-                    }
-                )
-                .then(
-                    function (user) {
-                        if (user) {
-                            req.login(user, function (err) {
-                                if (err) {
-                                    res.status(400).send(err);
-                                }
-                                else {
-                                    res.json(user);
-                                }
-                            });
-                        }
-                    },
-                    function (err) {
-                        res.status(400).send(err);
-                    }
-                );
-        }
+
+        //if (isAdmin(req.user)) {
+        //    userModel
+        //        .findUserByUsername(user.username)
+        //        .then(
+        //            function (usr) {
+        //                if (usr) {
+        //                    res.json(null);
+        //                }
+        //                else {
+        //                    user.password = bcrypt.hashSync(user.password);
+        //                    userModel.createUser(user)
+        //                        .then(
+        //                            function (doc) {
+        //                                res.json(doc);
+        //                            }
+        //                        );
+        //                }
+        //            },
+        //
+        //            function (err) {
+        //                res.status(400).send(err);
+        //            }
+        //        )
+        //        .then(
+        //            function (user) {
+        //                if (user) {
+        //                    req.login(user, function (err) {
+        //                        if (err) {
+        //                            res.status(400).send(err);
+        //                        }
+        //                        else {
+        //                            res.json(user);
+        //                        }
+        //                    });
+        //                }
+        //            },
+        //            function (err) {
+        //                res.status(400).send(err);
+        //            }
+        //        );
+        //}
     }
 
     function getusers(req, res){
