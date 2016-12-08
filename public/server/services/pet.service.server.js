@@ -8,75 +8,72 @@ module.exports = function(app, petModel){
 	app.post('/msdapi/project/petfavoritelist/:petid', createFavoriteList);
 	app.get('/msdapi/project/getfavoritelist/:petid/user', getFavoriteList);
 	app.get('/msdapi/project/listallpets', listAllPets);
-    app.get('/msdapi/project/pet/availability/:availability', getPetByAvailability);
+	app.get('/msdapi/project/pet/availability/:availability', getPetByAvailability);
 	app.get('/msdapi/project/pet/category/:category', getPetByCategory);
 
 	function createPet(req, res){
 		var newPet = req.body;
 		petModel.createPet(newPet)
-			 .then(function(result, err){
-			 	if(err){
-			 		throw err;
-			 	}
-			 	res.jsonp(result);
-			 });
+		.then(function(result, err){
+			if(err){
+				throw err;
+			}
+			res.jsonp(result);
+		});
 	}
 
-    function updatePet(req, res) {
-        var updatedPet = req.body;
-        var petId = req.params.id;
-        var userId = req.body.userId;
-        petModel
-        	.updatePet(userId, petId, updatedPet)
-            .then(function(result, err) {
-            	if(err) {
-                	throw err;
-            	}
-           	res.jsonp(result);
-           	petModel.notifyUsers(updatedPet);
-        });
-    }
-    
+	function updatePet(req, res) {
+		var updatedPet = req.body;
+		var petId = req.params.id;
+		var userId = req.body.userId;
+		petModel
+		.updatePet(userId, petId, updatedPet)
+		.then(function(result, err) {
+			if(err) {
+				throw err;
+			}
+			petModel.notifyUsers(updatedPet);
+			res.jsonp(result);
+		});
+	}
+
 	function deletePet(req, res){
 		var petId = req.params.id;
 		var userId = req.body.userId;
 		petModel
-			.deletePet(petId, userId)
-		    .then(function(result, err){
-				if (result) {
-					listAllPets(req, res);
-				}
-
-		     	if(err){
-		     		throw err;
-		     	}
-		     });
+		.deletePet(petId, userId)
+		.then(function(result, err){
+			if(err){
+				throw err;
+			}
+			res.jsonp(result);
+		});
 	}
 
 	function listAllPets(req, res){
 		petModel
-			.listAllPets()
-			.then(
-				function(pets) {
-					res.json(pets);
-				},
+		.listAllPets()
+		.then(
+			function(pets) {
+				res.json(pets);
+			},
 
-				function(err) {
-					res.status(400).send(err);
-				}
+			function(err) {
+				res.status(400).send(err);
+			}
 			);
 	}
 
 	function getPetById(req, res){
 		petModel
-			.findPetById(req.params.id)
-			.then(
-				function (pet) {
-					res.json(pet);
-				},
-				function (err) {
-					res.status(400).send(err);
-				}
+		.findPetById(req.params.id)
+		.then(
+			function (pet) {
+				res.json(pet);
+			},
+			function (err) {
+				res.status(400).send(err);
+			}
 			)
 	}
 
@@ -85,7 +82,7 @@ module.exports = function(app, petModel){
 		var userId = req.params.userId;
 
 		petModel
-			.createFavoriteList(userId, petDetails)
+		.createFavoriteList(userId, petDetails)
 			// add user to pet favorite list
 			.then(
 				function (pet) {
@@ -94,7 +91,7 @@ module.exports = function(app, petModel){
 				function (err) {
 					res.status(400).send(err);
 				}
-			)
+				)
 
 			// add pet to user's favorite list
 			.then(
@@ -104,14 +101,14 @@ module.exports = function(app, petModel){
 				function (err) {
 					res.status(400).send(err);
 				}
-			);
-	}
+				);
+		}
 
-	function getFavoriteList(req, res){
-		var petId = req.params.petId;
-		var pet = null;
+		function getFavoriteList(req, res){
+			var petId = req.params.petId;
+			var pet = null;
 
-		petModel
+			petModel
 			.findPetById(petId)
 			.then(
 				function (doc) {
@@ -126,7 +123,7 @@ module.exports = function(app, petModel){
 				function (err) {
 					res.status(400).send(err);
 				}
-			)
+				)
 			.then(
 				function (users) {
 					pet.userFavortites = users;
@@ -135,32 +132,32 @@ module.exports = function(app, petModel){
 				function (err) {
 					res.status(400).send(err);
 				}
-			);
-	}
+				);
+		}
 
-	function getPetByAvailability(req, res){
-		var availability = req.params.availability;
+		function getPetByAvailability(req, res){
+			var availability = req.params.availability;
 
-		petModel
+			petModel
 			.getPetByAvailability(availability)
 			.then(function(result, err){
-			 	if(err){
-			 		throw err;
-			 	}
-			 	res.jsonp(result);
-			 });
-	}
+				if(err){
+					throw err;
+				}
+				res.jsonp(result);
+			});
+		}
 
-	function getPetByCategory(req, res){
-		var category = req.params.category;
-		petModel
+		function getPetByCategory(req, res){
+			var category = req.params.category;
+			petModel
 			.getPetsByCategory(category)
 			.then(function(result, err){
-			 	if(err){
-			 		throw(err);
-			 	}
-			 	res.jsonp(result);
-			 });
-	}
+				if(err){
+					throw(err);
+				}
+				res.jsonp(result);
+			});
+		}
 
-}
+	}
