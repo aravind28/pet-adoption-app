@@ -11,7 +11,7 @@ module.exports = function(app, mongoose){
         password: String,
         firstName: String,
         lastName: String,
-        roles: [String],
+        roles: String,
         emails: [String],
         phones: [String],
         // id's of favorite pets for this user

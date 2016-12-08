@@ -37,9 +37,10 @@ module.exports = function(app, petModel){
     }
     
 	function deletePet(req, res){
-		var id = req.params.id;
+		var petId = req.params.id;
+		var userId = req.body.userId;
 		petModel
-			.deletePet(id)
+			.deletePet(petId, userId)
 		    .then(function(result, err){
 		     	if(err){
 		     		throw err;

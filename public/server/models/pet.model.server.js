@@ -3,6 +3,8 @@ var q = require('q')
 module.exports = function(app, db, mongoose, userModel){
 	var PetSchema = require("./pet.schema.server.js")(app, mongoose);
 	var PetModel = mongoose.model("PetModel", PetSchema);
+	var UserSchema2 = require("./user.schema.server.js")(app, mongoose);
+	var UserModel2 = mongoose.model("UserModel2", UserSchema2);
 
 	var api = {
 		createPet : createPet,
@@ -18,26 +20,44 @@ module.exports = function(app, db, mongoose, userModel){
 
 	function createPet(newPet){
 		var deferred = q.defer();
-		// for(var u in userModel.find()){
-		// 	if(u.roles == ["admin"]){
-				PetModel.create(newPet, function(err, results){
-					deferred.resolve(results);
-				});
-				return deferred.promise;
-		// 	}
-		// }
+		UserModel2.findOne({_id:newPet.userId},
+			function(err,doc){
+				if(err){
+					deferred.reject(err);
+				}
+				if(doc){
+					if(doc.roles === "admin"){
+						PetModel.create(newPet, function(err, results){
+							deferred.resolve(results);
+						})
+					}
+					else{
+						deferred.resolve(null);
+					}
+				}
+			});
+		return deferred.promise;
 	}
 
-	function deletePet(id){
+	function deletePet(petId, userId){
 		var deferred = q.defer();
-		// for(var u in userModel.find()){
-		// 	if(u.roles == ["admin"]){
-				PetModel.remove({_id :id}, function(err, results){
-					deferred.resolve(results);
-				});
-				return deferred.promise;
-		// 	}
-		// }
+		UserModel2.findOne({_id:userId},
+			function(err,doc){
+				if(err){
+					deferred.reject(err);
+				}
+				if(doc){
+					if(doc.roles === "admin"){
+						PetModel.remove({_id :petId}, function(err, results){
+							deferred.resolve(results);
+						});
+					}
+					else{
+						deferred.resolve(null);
+					}
+				}
+			});
+		return deferred.promise;
 	}
     
     function updatePet(petId, newPet) {
