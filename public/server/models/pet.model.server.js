@@ -9,12 +9,12 @@ module.exports = function(app, db, mongoose, userModel){
 	var api = {
 		createPet : createPet,
 		deletePet : deletePet,
-        updatePet : updatePet,
+		updatePet : updatePet,
 		findPetById : findPetById,
 		listAllPets : listAllPets,
 		createFavoriteList : createFavoriteList,
-        notifyUsers : notifyUsers,
-        getPetByAvailability : getPetsByAvailability,
+		notifyUsers : notifyUsers,
+		getPetByAvailability : getPetsByAvailability,
 		getPetsByCategory : getPetsByCategory
 	};
 
@@ -59,33 +59,43 @@ module.exports = function(app, db, mongoose, userModel){
 			});
 		return deferred.promise;
 	}
-    
-    function updatePet(petId, newPet) {
-        var deferred = q.defer();
-		// for(var u in userModel.find()){
-		// 	if(u.roles == ["admin"]){
-				PetModel.update(
-					{_id : petId},
-					{$set : {
-						petName : newPet.petName,
-						petGender : newPet.petGender,
-						petAge : newPet.petAge,
-						petCategory : newPet.petCategory,
-						petAvailability : newPet.petAvailability,
-						adoptedBy : newPet.adoptedBy,
-						favorites : newPet.favorites,
-						userFavorites : newPet.userFavorites
-					}
-					},
-					function(err, result) {
-						PetModel.findOne({_id : petId}, function(err, result) {
-							deferred.resolve(result);
+
+	function updatePet(userId, petId, newPet) {
+		var deferred = q.defer();
+		UserModel2.findOne({_id:userId},
+			function(err,doc){
+				if(err){
+					deferred.reject(err);
+				}
+				if(doc){
+					if(doc.roles === "admin"){
+						PetModel.update(
+							{_id : petId},
+							{$set : {
+								petName : newPet.petName,
+								petGender : newPet.petGender,
+								petAge : newPet.petAge,
+								petCategory : newPet.petCategory,
+								petAvailability : newPet.petAvailability,
+								adoptedBy : newPet.adoptedBy,
+								favorites : newPet.favorites,
+								userFavorites : newPet.userFavorites
+							}
+						},
+						function(err, result) {
+							PetModel.findOne({_id : petId}, function(err, result) {
+								notifyUsers(result);
+								deferred.resolve(result);
+							});
 						});
-					});
-				return deferred.promise;
-		// 	}
-		// }
-    }
+					}
+					else{
+						deferred.resolve(null);
+					}
+				}
+			});
+		return deferred.promise;
+	}
 
 	function listAllPets(){
 		return PetModel.find();
@@ -129,18 +139,18 @@ module.exports = function(app, db, mongoose, userModel){
 			});
 		return deferred.promise;
 	}
-    
-    function notifyUsers(pet) {
-        watchingUsers = pet.favorites;
-        for (var i = 0; i < watchingUsers.length; i++) {
-            userModel.findUserById(watchingUsers[i]).then(function(res){
-                res.notifications.push("Information of a watching pet " + pet.petName + " has changed.");
-                userModel.updateUser(res._id, res).then(function(res2){});
-            });
-        }
-    }
 
-    function getPetsByAvailability(availability){
+	function notifyUsers(pet) {
+		watchingUsers = pet.favorites;
+		for (var i = 0; i < watchingUsers.length; i++) {
+			userModel.findUserById(watchingUsers[i]).then(function(res){
+				res.notifications.push("Information of a watching pet " + pet.petName + " has changed.");
+				userModel.updateUser(res._id, res).then(function(res2){});
+			});
+		}
+	}
+
+	function getPetsByAvailability(availability){
 		var deferred = q.defer();
 		PetModel.find({"petAvailability" : availability}, function(err, results){
 			if(err){
@@ -161,6 +171,6 @@ module.exports = function(app, db, mongoose, userModel){
 		});
 		return deferred.promise;
 	}
-    
+
 	return api;
 }

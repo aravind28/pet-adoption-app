@@ -27,7 +27,7 @@ module.exports = function(app, mongoose, db) {
                 }
                 if(doc){
                     PetModel1.findOne({_id: petId},
-                        
+
                         function(err, doc2){
                             if(err){
                                 deferred.reject(err);
@@ -44,19 +44,19 @@ module.exports = function(app, mongoose, db) {
                                 })
                             }
                         });
-                
+
                         // add user to favorites
                         doc.favorites.push(petId);
                         doc.save(function (err, doc) {
-                        if(err){
-                            deferred.reject(err);
-                        }
-                        else{
-                            deferred.resolve(doc);
-                        }
-                    });
-                }
-            });
+                            if(err){
+                                deferred.reject(err);
+                            }
+                            else{
+                                deferred.resolve(doc);
+                            }
+                        });
+                    }
+                });
         return deferred.promise;
     }
 
@@ -69,32 +69,27 @@ module.exports = function(app, mongoose, db) {
     }
     
     function updateUser(id, newUser) {
-        if(newUser.username == "root"){
-            newUser.roles = ["admin"];
-        }
-        delete newUser ["_id"];
-
         var deferred = q.defer();
         UserModel.update(
             {_id : id}, 
             {$set : {
-                        username : newUser.username,
-                        password : newUser.password,        
-                        firstName : newUser.firstName,
-                        lastName : newUser.lastName,
-                        roles : newUser.roles,
-                        emails : newUser.emails,
-                        phones : newUser.phones,
-                        favorites : newUser.favorites,
-                        favoritePets : newUser.favoritePets,
-                        notifications : newUser.notifications
-                    }
-            },
-            function(err, result) {
-                UserModel.findOne({_id : id}, function(err, result) {
-                    deferred.resolve(result);
-                });
+                username : newUser.username,
+                password : newUser.password,        
+                firstName : newUser.firstName,
+                lastName : newUser.lastName,
+                roles : newUser.roles,
+                emails : newUser.emails,
+                phones : newUser.phones,
+                favorites : newUser.favorites,
+                favoritePets : newUser.favoritePets,
+                notifications : newUser.notifications
+            }
+        },
+        function(err, result) {
+            UserModel.findOne({_id : id}, function(err, result) {
+                deferred.resolve(result);
             });
+        });
         return deferred.promise;
     }
     
