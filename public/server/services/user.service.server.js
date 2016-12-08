@@ -238,7 +238,6 @@ module.exports = function(app, userModel){
         // }
     }
 
-
     function getuserbyid(req, res){
         userModel
             .findUserById(req.params.id)
