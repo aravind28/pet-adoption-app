@@ -637,6 +637,33 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Comment"
+        ],
+        "description": "Retrieve a list of comments for the given pet",
+        "operationId": "getCommentForPet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "path",
+            "description": "ID of the pet",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The comments posted to the pet with the given Id",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
       }
     },
 
@@ -662,36 +689,6 @@
         "responses": {
           "200": {
             "description": "The comments posted by the user with the given userId",
-            "schema": {
-              "$ref": "#/definitions/comment"
-            }
-          }
-        }
-      }
-    },
-
-    "/msdapi/project/pet/{petId}/comments": {
-      "get": {
-        "tags": [
-          "Comment"
-        ],
-        "description": "Retrieve a list of comments for the given pet",
-        "operationId": "getCommentForPet",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "petId",
-            "in": "path",
-            "description": "ID of the pet",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The comments posted to the pet with the given Id",
             "schema": {
               "$ref": "#/definitions/comment"
             }
