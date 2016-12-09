@@ -59,4 +59,6 @@ swagger.configure(applicationUrl, '1.0.0');
 
 app.set('ipaddress', (process.env.IP));
 app.set('port', port);
-app.listen(app.get('port'), app.get('ipaddress'));
+var server =  app.listen(app.get('port'), app.get('ipaddress'));
+
+module.exports =  server;
