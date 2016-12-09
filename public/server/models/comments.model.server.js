@@ -24,7 +24,7 @@ module.exports = function (app, db, mongoose, petModel, userModel) {
             petId : petId
         };
 
-        userModel.findUserById(user._id).then(function(res, err) {
+        userModel.findUserById(user.userId).then(function(res, err) {
             if(!res) {
                 return null;
             } else {
