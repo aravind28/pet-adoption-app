@@ -91,7 +91,7 @@ module.exports = function(app, mongoose, db) {
                 password : newUser.password,
                 firstName : newUser.firstName,
                 lastName : newUser.lastName,
-                roles : newUser.roles,
+                //roles : newUser.roles,
                 emails : newUser.emails,
                 phones : newUser.phones,
                 favorites : newUser.favorites,

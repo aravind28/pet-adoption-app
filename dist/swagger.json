@@ -349,7 +349,7 @@
       }
     },
 
-    "msdapi/project/admin/user": {
+    "/msdapi/project/admin/user": {
       "post": {
         "tags": ["Users"],
         "description": "Creates a new Admin User",
