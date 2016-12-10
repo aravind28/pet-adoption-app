@@ -9,7 +9,16 @@ const app = require('../server.js');
 const expect = require('chai').expect;
 const should = chai.should();
 
+
 describe('Validate Login of an Existing User', function () {
+    var foo = false;
+    beforeEach(function(){
+
+        // simulate async call w/ setTimeout
+        setTimeout(function(){
+            foo = true;
+        }, 10000);
+    });
     it('Success if credentials are valid', function (done) {
         request(app)
             .post('/msdapi/project/user/login')
