@@ -80,6 +80,9 @@ module.exports = function(app, mongoose, db) {
                 } else {
                     deferred.resolve(null);
                 }
+                else{
+                    deferred.resolve(null);
+                }
             });
         return deferred.promise;
     }

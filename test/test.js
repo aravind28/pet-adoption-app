@@ -56,6 +56,23 @@ describe('Create a new user', function () {
     });
 });
 
+describe('Validate Login of an Existing User', function () {
+    it('Success if credentials are valid', function (done) {
+        request(app)
+            .post('/msdapi/project/user/login')
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send({username: 'user2', password: 'user2'})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(function (res) {
+                expect(res.body).not.to.be.empty;
+                expect(res.body).to.be.an('object');
+            })
+            .end(done);
+    });
+});
+
 describe('Update a user', function () {
     it('Success after updating a user', function (done) {
         request(app)
@@ -98,9 +115,19 @@ describe('Delete a user', function () {
     });
 });
 
+describe('Validate Login of a non Existing User', function () {
+    it('Success if it does not log in', function (done) {
+        request(app)
+            .post('/msdapi/project/user/login')
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send({username: 'user2', password: 'user2'})
+            .expect(401)
+            .end(done);
+    });
+});
+
 describe('Create a new Admin user', function () {
-    var admin;
-    
     it('Success if a new Admin user is created', function (done) {
         request(app)
             .post('/msdapi/project/admin/user/')
@@ -122,16 +149,24 @@ describe('Create a new Admin user', function () {
             .expect(function (res) {
                 expect(res.body).not.to.be.empty;
                 expect(res.body).to.be.an('object');
-                admin = res.body;
-            }).end(done);
+                user = res.body;
+            })
+            .end(done);
     });
+});
 
-    it('Success after deleting a admin', function (done) {
+describe('Delete an Admin user', function () {
+    it('Success after deleting the Admin user', function (done) {
         request(app)
-            .delete('/msdapi/project/user/' + admin._id)
+            .delete('/msdapi/project/user/' + user._id)
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
             .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(function (res) {
+                //expect(res.body).to.be.an('null');
+                expect('null');
+            })
             .end(done);
     });
 });
