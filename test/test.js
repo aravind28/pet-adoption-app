@@ -94,7 +94,7 @@ describe('Delete a user', function () {
             .expect(200)
             .expect('Content-Type', /json/)
             .expect(function (res) {
-                expect(res.body).not.to.be.empty;
+                expect(res.body).to.be.an('array');
             })
             .end(done);
     });
