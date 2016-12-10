@@ -70,16 +70,16 @@ module.exports = function(app, mongoose, db) {
     }
 
     function createAdminUser(newUser){
-        //console.log(newUser);
+        var deferred = q.defer();
         UserModel.findOne({roles : newUser.roles},
             function (err, doc) {
-                if(doc == null){
-                    return UserModel.create(newUser);
-                }
-                else{
-                    return err;
+                if(doc === null){
+                    UserModel.create(newUser, function (err, result) {
+                        deferred.resolve(result);
+                    });
                 }
             });
+        return deferred.promise;
     }
 
     function updateUser(id, newUser) {

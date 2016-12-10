@@ -56,7 +56,6 @@ describe('Create a new user', function () {
     });
 });
 
-
 describe('Update a user', function () {
     it('Success after updating a user', function (done) {
         request(app)
@@ -84,7 +83,6 @@ describe('Update a user', function () {
     });
 });
 
-
 describe('Delete a user', function () {
     it('Success after deleting a user', function (done) {
         request(app)
@@ -99,6 +97,35 @@ describe('Delete a user', function () {
             .end(done);
     });
 });
+
+//describe('Create a new Admin user', function () {
+//    it('Success if a new Admin user is created', function (done) {
+//        request(app)
+//            .post('/msdapi/project/admin/user/')
+//            .set('Accept', 'application/json')
+//            .set('Content-Type', 'application/json')
+//            .send({
+//                username: 'admin',
+//                password: 'admin',
+//                "firstName": "admin",
+//                "lastName": "admin",
+//                "emails": "admin@admin.com",
+//                "phones": [
+//                    "777"
+//                ],
+//                "favorites": [],
+//                "notifications": []})
+//            .expect(200)
+//            .expect('Content-Type', /json/)
+//            .expect(function (res) {
+//                expect(res.body).not.to.be.empty;
+//                expect(res.body).to.be.an('object');
+//                user = res.body;
+//            })
+//            .end(done);
+//    });
+//});
+
 
 //describe('Validate Logout of a Logged-in User', function () {
 //    it('Success if Logs-Out', function (done) {
