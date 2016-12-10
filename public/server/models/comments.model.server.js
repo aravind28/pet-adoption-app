@@ -1,7 +1,7 @@
 /**
  * Created by Akshay on 19-10-2016.
  */
-
+var q = require('q');
 module.exports = function (app, db, mongoose, petModel, userModel) {
 
     var CommentsSchema = require("./comments.schema.server.js")(app, mongoose);
@@ -15,28 +15,31 @@ module.exports = function (app, db, mongoose, petModel, userModel) {
     };
     return api;
 
-    function savecomments(user, petId){
+    function savecomments(commentBody, petId){
+        var deferred = q.defer();
         var comment ={
             createAt : Date.now(),
-            comments: user.comments,
-            userId: user.userId,
-            emails: user.emails,
+            comments: commentBody.comments,
+            userId: commentBody.userId,
+            emails: commentBody.emails,
             petId : petId
         };
 
-        userModel.findUserById(user.userId).then(function(res, err) {
+        userModel.findUserById(commentBody.userId).then(function(res, err) {
             if(!res) {
-                return null;
+                deferred.resolve(null);
             } else {
                 petModel.findPetById(petId).then(function(res2, err2) {
                     if (!res2) {
-                        return null;
+                        deferred.resolve(null);
                     } else {
-                        return CommentsModel.create(comment);
+                        deferred.resolve(CommentsModel.create(comment));
                     }
                 });
             }
         });
+
+        return deferred.promise;
     }
 
     function findCommentsById(commentId){

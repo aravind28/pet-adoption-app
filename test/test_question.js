@@ -9,7 +9,7 @@ describe('Questions', function () {
     var user;
     var question;
 
-    beforeEach(function (done) {
+    before(function (done) {
         request(app)
             .post('/msdapi/project/user/')
             .set('Accept', 'application/json')
@@ -30,6 +30,7 @@ describe('Questions', function () {
             .expect('Content-Type', /json/)
             .expect(function (res) {
                 user = res.body;
+                //console.log(user);
             })
             .end(done);
     });
@@ -91,7 +92,7 @@ describe('Questions', function () {
         });
     });
 
-    afterEach(function (done) {
+    after(function (done) {
         request(app)
             .delete('/msdapi/project/user/' + user._id)
             .set('Accept', 'application/json')
