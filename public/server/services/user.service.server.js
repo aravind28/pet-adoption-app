@@ -26,7 +26,6 @@ module.exports = function(app, userModel){
     function createFavoriteList(req, res){
         var userId = req.body.userId;
         var petId = req.body.petId;
-        console.log(userId, petId);
         userModel
             .createFavoriteList(userId, petId)
             .then(
@@ -187,7 +186,7 @@ module.exports = function(app, userModel){
                     else{
                         user.password = bcrypt.hashSync(user.password);
                         userModel.createAdminUser(user).then(function (result) {
-                            res.jsonp(result);
+                                res.json(result);
                         });
                     }
                 },
