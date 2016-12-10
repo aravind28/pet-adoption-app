@@ -5,11 +5,20 @@ var http = require("http");
 var mongoose = require("mongoose");
 var url = require('url');
 var argv = require('minimist')(process.argv.slice(2));
+var session = require('express-session');
+var passport = require('passport');
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/v1", subpath);
+
+app.use(session({ secret: "session",
+    resave: true,
+    saveUninitialized: true}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 var swagger = require("swagger-node-express").createNew(subpath);
 

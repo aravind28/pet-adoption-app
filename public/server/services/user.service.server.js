@@ -10,7 +10,7 @@ var bcrypt = require('bcrypt-nodejs');
 module.exports = function(app, userModel){
     var auth = authorized;
 
-    app.post("/msdapi/project/user/login", login);
+    app.post("/msdapi/project/user/login", passport.authenticate('MSDAPI'), login);
     app.post("/msdapi/project/user/logout", logout);
     app.get("/msdapi/project/user/loggedin", loggedin);
     app.post('/msdapi/project/user', createUser);
@@ -22,6 +22,8 @@ module.exports = function(app, userModel){
     app.get("/msdapi/project/user", getusers);
 
     passport.use('MSDAPI', new LocalStrategy(projectLocalStrategy));
+    passport.serializeUser(serializeUser);
+    passport.deserializeUser(deserializeUser);
 
     function createFavoriteList(req, res){
         var userId = req.body.userId;
@@ -42,15 +44,17 @@ module.exports = function(app, userModel){
                 });
     }
 
-    function projectLocalStrategy(username, password,done){
+    function projectLocalStrategy(username, password, done){
         userModel
             .findUserByUsername(username)
             .then(
-                function(user){
+                function (user) {
                     if(user && bcrypt.compareSync(password, user.password)){
-                        return done(null, true);
+                        //console.log("hello");
+                        return done(null, user);
                     }
                     else{
+                        //console.log("Bye");
                         return done(null, false);
                     }
                 },
@@ -59,6 +63,29 @@ module.exports = function(app, userModel){
                     if(err){
                         return done(err);
                     }
+                }
+            );
+    }
+
+    function login(req, res) {
+        var user = req.user;
+        delete user.password;
+        res.json(user);
+    }
+
+    function serializeUser(user, done){
+        done(null, user);
+    }
+
+    function deserializeUser(user, done){
+        userModel
+            .findUserById(user._id)
+            .then(
+                function (user) {
+                    done(null, user);
+                },
+                function (err) {
+                    done(err, null);
                 }
             );
     }
@@ -79,30 +106,30 @@ module.exports = function(app, userModel){
         return false;
     }
 
-    function login(req, res){
-        var user = req.body;
-        userModel
-            .findUserByUsername(user.username)
-            .then(
-                function(usr){
-                    if(usr && bcrypt.compareSync(user.password, usr.password)){
-                        res.json(usr);
-                    }
-                    else{
-                        res.status(401).send("unauthorized");
-                    }
-                },
-
-                function (err) {
-                    if(err){
-                        return done(err);
-                    }
-                }
-            );
-        // var user = req.user;
-        // delete user.password;
-        // res.json(user);
-    }
+    //function login(req, res){
+    //    var user = req.body;
+    //    userModel
+    //        .findUserByUsername(user.username)
+    //        .then(
+    //            function(usr){
+    //                if(usr && bcrypt.compareSync(user.password, usr.password)){
+    //                    res.json(usr);
+    //                }
+    //                else{
+    //                    res.status(401).send("unauthorized");
+    //                }
+    //            },
+    //
+    //            function (err) {
+    //                if(err){
+    //                    return done(err);
+    //                }
+    //            }
+    //        );
+    //    // var user = req.user;
+    //    // delete user.password;
+    //    // res.json(user);
+    //}
 
     function logout(req, res){
         req.logOut();
