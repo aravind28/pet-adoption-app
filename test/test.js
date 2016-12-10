@@ -9,7 +9,38 @@ const app = require('../server.js');
 const expect = require('chai').expect;
 //const should = chai.should();
 
+var adminUser;
 var user;
+var pet;
+var userFavList;
+
+describe('Create a new Admin user', function () {
+    it('Success if a new Admin user is created', function (done) {
+        request(app)
+            .post('/msdapi/project/admin/user/')
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send({
+                username: 'admin',
+                password: 'admin',
+                "firstName": "admin",
+                "lastName": "admin",
+                "emails": "admin@agency.com",
+                "phones": [
+                    "777"
+                ],
+                "favorites": [],
+                "notifications": []})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(function (res) {
+                // expect(res.body).not.to.be.empty;
+                expect(res.body).to.be.an('object');
+                adminUser = res.body;
+            })
+            .end(done);
+    });
+});
 
 describe('Create a new user', function () {
     it('Success after sending a user', function (done) {
@@ -20,9 +51,9 @@ describe('Create a new user', function () {
             .send({
                 username: 'user2',
                 password: 'user2',
-                "firstName": "fn5",
-                "lastName": "ln5",
-                "emails": "name5@name.com",
+                "firstName": "fn2",
+                "lastName": "ln2",
+                "emails": "user2@agency.com",
                 "phones": [
                     "206"
                 ],
@@ -68,7 +99,6 @@ describe('Validate Logged in of a User', function () {
             .expect(function (res) {
                 expect(res.body).not.to.be.empty;
                 expect(res.body).to.be.an('object');
-                console.log(res.body);
             })
             .end(done);
     });
@@ -98,11 +128,11 @@ describe('Update a user', function () {
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
             .send({
-                username: 'user1Updated',
-                password: 'user1',
-                "firstName": "fn5",
-                "lastName": "ln5",
-                "emails": "name5@name.com",
+                username: 'user2Updated',
+                password: 'user2',
+                "firstName": "fn2",
+                "lastName": "ln2",
+                "emails": "user2@agency.com",
                 "phones": [
                     "206"
                 ],
@@ -114,6 +144,113 @@ describe('Update a user', function () {
                 expect(res.body).not.to.be.empty;
                 expect(res.body).to.be.an('object');
             })
+            .end(done);
+    });
+});
+
+describe('Create a new pet', function () {
+    it('Success after creating a pet', function (done) {
+        request(app)
+            .post('/msdapi/project/pet/')
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send({
+                "userId":adminUser._id,
+                "petName" : "pet10",
+                "petGender" : "male",
+                "petAge" : "5",
+                "petCategory" : "dog",
+                "petAvailability" : true,
+                "adoptedBy" : "",
+                "favorites" : []
+            })
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(function (res) {
+                expect(res.body).not.to.be.empty;
+                expect(res.body).to.be.an('object');
+                pet = res.body;
+            })
+            .end(done);
+    });
+});
+
+describe('Create a favorite list', function () {
+    it('Success after creating a favorite list', function (done) {
+        request(app)
+            .post('/msdapi/project/petfavoritelist/')
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send({
+                "userId":user._id,
+                "petId":pet._id
+            })
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(function (res) {
+                expect(res.body).not.to.be.empty;
+                expect(res.body).to.be.an('object');
+                userFavList = res.body;
+            })
+            .end(done);
+    });
+});
+
+describe('Update a pet', function () {
+    it('Success after updating a pet', function (done) {
+        request(app)
+            .put('/msdapi/project/pet/' + pet._id)
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send({
+                "userId": adminUser._id,
+                "petName" : "pet10",
+                "petGender" : "male",
+                "petAge" : "7",
+                "petCategory" : "dog",
+                "petAvailability" : true,
+                "adoptedBy" : "",
+                "favorites" : [user._id]
+            })
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(function (res) {
+                expect(res.body).not.to.be.empty;
+                expect(res.body).to.be.an('object');
+            })
+            .end(done);
+    });
+});
+
+describe('Get a user to check if the user is notified of pet update', function(){
+    it('Success in getting an user', function(done){
+        request(app)
+            .get('/msdapi/project/user/' + user._id)
+            .set('Content-Type', 'application/json')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(function (res) {
+                expect(res.body).not.to.be.empty;
+            })
+            .end(done)
+
+    });
+});
+
+describe('Delete a pet', function () {
+    it('Success after deleting a pet', function (done) {
+        request(app)
+            .delete('/msdapi/project/pet/' + pet._id)
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send({
+                "userId": adminUser._id
+            })
+            .expect(200)
+            .expect('Content-Type', /json/)
+            // .expect(function (res) {
+            //     expect(res.body).to.be.an('json');
+            // })
             .end(done);
     });
 });
@@ -145,38 +282,10 @@ describe('Validate Login of a non Existing User', function () {
     });
 });
 
-describe('Create a new Admin user', function () {
-    it('Success if a new Admin user is created', function (done) {
-        request(app)
-            .post('/msdapi/project/admin/user/')
-            .set('Accept', 'application/json')
-            .set('Content-Type', 'application/json')
-            .send({
-                username: 'admin',
-                password: 'admin',
-                "firstName": "admin",
-                "lastName": "admin",
-                "emails": "admin@admin.com",
-                "phones": [
-                    "777"
-                ],
-                "favorites": [],
-                "notifications": []})
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .expect(function (res) {
-                expect(res.body).not.to.be.empty;
-                expect(res.body).to.be.an('object');
-                user = res.body;
-            })
-            .end(done);
-    });
-});
-
 describe('Delete an Admin user', function () {
     it('Success after deleting the Admin user', function (done) {
         request(app)
-            .delete('/msdapi/project/user/' + user._id)
+            .delete('/msdapi/project/user/' + adminUser._id)
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
             .expect(200)
