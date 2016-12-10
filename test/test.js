@@ -26,6 +26,8 @@ const should = chai.should();
 //    });
 //});
 
+var user;
+
 describe('Create a new user', function () {
     it('Success after sending a user', function (done) {
         request(app)
@@ -33,8 +35,8 @@ describe('Create a new user', function () {
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
             .send({
-                username: 'user1',
-                password: 'user1',
+                username: 'user2',
+                password: 'user2',
                 "firstName": "fn5",
                 "lastName": "ln5",
                 "emails": "name5@name.com",
@@ -48,6 +50,7 @@ describe('Create a new user', function () {
             .expect(function (res) {
                 expect(res.body).not.to.be.empty;
                 expect(res.body).to.be.an('object');
+                user = res.body;
             })
             .end(done);
     });
@@ -55,9 +58,9 @@ describe('Create a new user', function () {
 
 
 describe('Update a user', function () {
-    it('Success after sending a user', function (done) {
+    it('Success after updating a user', function (done) {
         request(app)
-            .put('/msdapi/project/user/584b4a026f2123baf1cd50fc')
+            .put('/msdapi/project/user/' + user._id)
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
             .send({
@@ -80,6 +83,23 @@ describe('Update a user', function () {
             .end(done);
     });
 });
+
+
+describe('Delete a user', function () {
+    it('Success after deleting a user', function (done) {
+        request(app)
+            .delete('/msdapi/project/user/' + user._id)
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(function (res) {
+                expect(res.body).not.to.be.empty;
+            })
+            .end(done);
+    });
+});
+
 //describe('Validate Logout of a Logged-in User', function () {
 //    it('Success if Logs-Out', function (done) {
 //        request(app)
