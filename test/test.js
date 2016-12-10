@@ -10,30 +10,22 @@ const expect = require('chai').expect;
 const should = chai.should();
 
 
-describe('Validate Login of an Existing User', function () {
-    var foo = false;
-    beforeEach(function(){
-
-        // simulate async call w/ setTimeout
-        setTimeout(function(){
-            foo = true;
-        }, 10000);
-    });
-    it('Success if credentials are valid', function (done) {
-        request(app)
-            .post('/msdapi/project/user/login')
-            .set('Accept', 'application/json')
-            .set('Content-Type', 'application/json')
-            .send({username: 'admin', password: 'admin'})
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .expect(function (res) {
-                expect(res.body).not.to.be.empty;
-                expect(res.body).to.be.an('object');
-            })
-            .end(done);
-    });
-});
+//describe('Validate Login of an Existing User', function () {
+//    it('Success if credentials are valid', function (done) {
+//        request(app)
+//            .post('/msdapi/project/user/login')
+//            .set('Accept', 'application/json')
+//            .set('Content-Type', 'application/json')
+//            .send({username: 'admin', password: 'admin'})
+//            .expect(200)
+//            .expect('Content-Type', /json/)
+//            .expect(function (res) {
+//                expect(res.body).not.to.be.empty;
+//                expect(res.body).to.be.an('object');
+//            })
+//            .end(done);
+//    });
+//});
 
 
 //describe('Validate Logout of a Logged-in User', function () {
