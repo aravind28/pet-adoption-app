@@ -137,7 +137,7 @@ module.exports = function(app, userModel){
     }
 
     function loggedin(req, res){
-        res.send(req.isAuthenticated() ? req.user: '0');
+        res.send(req.isAuthenticated() ? req.user: {"User":"Not Authenticated"});
     }
 
     function createUser(req, res) {
