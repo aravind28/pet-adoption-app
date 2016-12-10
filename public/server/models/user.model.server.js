@@ -77,6 +77,8 @@ module.exports = function(app, mongoose, db) {
                     UserModel.create(newUser, function (err, result) {
                         deferred.resolve(result);
                     });
+                } else {
+                    deferred.resolve(null);
                 }
             });
         return deferred.promise;
