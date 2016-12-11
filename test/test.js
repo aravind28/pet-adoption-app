@@ -177,6 +177,7 @@ describe('Create a new pet', function () {
 
 describe('Create a favorite list', function () {
     it('Success after creating a favorite list', function (done) {
+        this.timeout(3000);
         request(app)
             .post('/msdapi/project/petfavoritelist/')
             .set('Accept', 'application/json')
