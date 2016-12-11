@@ -28,6 +28,7 @@ var adopter;
 // });
 
 
+// agency
 client({
     path: 'https://pet-adoption-webservice.herokuapp.com/api-token-auth/',
     method: 'POST',
@@ -112,16 +113,147 @@ client({
         });
 
     });
-
 });
 
-// client({
-//     path: 'https://pet-adoption-webservice.herokuapp.com/agencies/all',
-//     method: 'GET',
-//     headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": "Token " + auth.token.stringify
-//     }
-// }).then(function (response) {
-//     console.log('response: ', response);
-// });
+
+// adopter
+client({
+    path: 'https://pet-adoption-webservice.herokuapp.com/api-token-auth/',
+    method: 'POST',
+    entity: {
+        "username": "aaa",
+        "password": "1234"
+    },
+    headers: {
+        "Content-Type": "application/json"
+    }
+}).then(function (response) {
+    auth = response.entity;
+    // get authentication token
+    client({
+        path: 'https://pet-adoption-webservice.herokuapp.com/agencies/all',
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Token " + auth.token
+        }
+    }).then(function (response) {
+        agency = response.entity[0];
+        // console.log(agency.id);
+        client({
+            path: 'https://pet-adoption-webservice.herokuapp.com/adopters/create',
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Token " + auth.token
+            },
+            entity: {
+                "username": "adopter2",
+                "password": "adopter2",
+                "email": "adopter2@agency.com",
+                "address": "721 Pine St, Seattle, WA 98101",
+                "first_name": "First_Name",
+                "last_name": "Last_Name"
+            }
+        }).then(function (response) {
+            adopter = response.entity;
+            client({
+                path: 'https://pet-adoption-webservice.herokuapp.com/adopters/update',
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Token " + auth.token
+                },
+                entity: {
+                    "adopter_id": adopter.id,
+                    "last_name": "Last_Name_Updated"
+                }
+            }).then(function (response) {
+                // console.log('response: ', response.entity);
+                client({
+                    path: 'https://pet-adoption-webservice.herokuapp.com/agencies/delete',
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Token " + auth.token
+                    },
+                    entity: {
+                        "adopter_id": adopter.id
+                    }
+                }).then(function (response) {
+                    console.log("success2");
+                });
+            });
+        });
+    });
+});
+
+
+// pet
+client({
+    path: 'https://pet-adoption-webservice.herokuapp.com/api-token-auth/',
+    method: 'POST',
+    entity: {
+        "username": "aaa",
+        "password": "1234"
+    },
+    headers: {
+        "Content-Type": "application/json"
+    }
+}).then(function (response) {
+    auth = response.entity;
+    // get authentication token
+    client({
+        path: 'https://pet-adoption-webservice.herokuapp.com/agencies/all',
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Token " + auth.token
+        }
+    }).then(function (response) {
+        agency = response.entity[0];
+        console.log(agency.id);
+        client({
+            path: 'https://pet-adoption-webservice.herokuapp.com/pets/create',
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Token " + auth.token
+            },
+            entity: {
+                "pet_name": "pet2",
+                "description": "Dog; Age:3; Gender:Female; Species:Husky;",
+                "agency_id": agency.id
+            }
+        }).then(function (response) {
+            pet = response.entity;
+            client({
+                path: 'https://pet-adoption-webservice.herokuapp.com/pets/update',
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Token " + auth.token
+                },
+                entity: {
+                    "pet_id": pet.id,
+                    "description": "Dog; Age:5; Gender:Female; Species:Husky;"
+                }
+            }).then(function (response) {
+                // console.log('response: ', response.entity);
+                client({
+                    path: 'https://pet-adoption-webservice.herokuapp.com/pets/delete',
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Token " + auth.token
+                    },
+                    entity: {
+                        "pet_id": pet.id
+                    }
+                }).then(function (response) {
+                    console.log("success3");
+                });
+            });
+        });
+    });
+});
