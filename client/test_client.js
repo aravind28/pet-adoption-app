@@ -11,6 +11,8 @@ var auth;
 var agency;
 var pet;
 var adopter;
+var favAdopter;
+var favPet;
 
 // client({
 //     path: 'https://pet-adoption-webservice.herokuapp.com/users/create',
